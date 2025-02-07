@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { CapsuleBufferGeometry } from "./threejs_lib/three-js-capsule-geometry/CapsuleBufferGeometry";
+import { Reflector } from "./threejs_lib/objects/Reflector";
 import "./style.scss";
 
 import View from "./components/View";
@@ -13,6 +14,10 @@ import logoSvg from "!!raw-loader!./nimblelogo.svg";
 import leftMouseSvg from "!!raw-loader!./leftMouse.svg";
 import rightMouseSvg from "!!raw-loader!./rightMouse.svg";
 import scrollMouseSvg from "!!raw-loader!./scrollMouse.svg";
+import groundConcreteTexture from '!!file-loader!./data/img/concrete.png';
+import clayRGBKTexturePath from '!!file-loader!./data/img/clay_rgbk.png';
+
+import { groundPlaneVertexShader, groundPlaneFragmentShader, createMatCapMaterial } from './polyscope/shader';
 
 const SCALE_FACTOR = 100;
 
@@ -217,6 +222,10 @@ class DARTView {
 
   backgroundColor: string = '#ffffff';
 
+  // Polyscope insprired changes 
+  private groundPlaneEnabled: boolean = true;
+  private groundPlane: THREE.Mesh;
+
   constructor(container: HTMLElement, startConnected: boolean = false) {
     container.className += " DARTWindow";
     this.container = container;
@@ -253,6 +262,9 @@ class DARTView {
     this.scene = new THREE.Scene();
     // this.scene.background = new THREE.Color(0xf8f8f8);
     this.scene.background = new THREE.Color(this.backgroundColor);
+
+    // Ground
+    this.initGroundPlane();
 
     const light = new THREE.DirectionalLight();
     light.castShadow = true;
@@ -429,6 +441,46 @@ class DARTView {
   getBackgroundColor = () => {
     return this.backgroundColor;
   };
+
+  initGroundPlane() {
+    let tex = new THREE.TextureLoader().load( groundConcreteTexture); 
+    tex.wrapS = THREE.MirroredRepeatWrapping;
+    tex.wrapT = THREE.MirroredRepeatWrapping;
+    this.groundPlane = new Reflector(new THREE.PlaneBufferGeometry(1000, 1000), {
+      clipBias: 0.003,
+      textureWidth: this.container.offsetWidth * window.devicePixelRatio,
+      textureHeight: this.container.offsetHeight * window.devicePixelRatio,
+      color: new THREE.Color(0x777777),
+    }) as unknown as THREE.Mesh;
+    console.log("Initial ground size: ", this.container.offsetWidth, this.container.offsetHeight);
+    
+    const material = this.groundPlane.material as THREE.ShaderMaterial;
+    material.vertexShader = groundPlaneVertexShader;
+    material.fragmentShader = groundPlaneFragmentShader;
+    material.uniforms.tex = { value: tex };
+    material.uniforms.alpha = { value: 0.5 };
+    let uvs = new Float32Array(4 * 2);
+    
+    const geometry = this.groundPlane.geometry as THREE.PlaneBufferGeometry;
+    geometry.setAttribute(
+      "texture_uv",
+      new THREE.BufferAttribute(Float32Array.from([0, 0, 0, 1/2, 1/2, 0, 1/2, 1/2]), 2)
+    );
+    this.groundPlane.rotateX(-Math.PI / 2);
+    this.scene.add(this.groundPlane);
+  };
+  
+  
+  // Add toggle method
+  public toggleGroundPlane(enabled: boolean) {
+    this.groundPlaneEnabled = enabled;
+    if (enabled) {
+      this.scene.add(this.groundPlane);
+    } else {
+      this.scene.remove(this.groundPlane);
+    }
+  };
+
 
   glContainerKeyboardEventListener = (e: KeyboardEvent) => {
     if (e.key === " ") {
@@ -1660,9 +1712,19 @@ class DARTView {
           map: this.textures.get(texture_starts[0].key),
         });
       } else {
-        meshMaterial = new THREE.MeshLambertMaterial({
-          color: new THREE.Color(color[0], color[1], color[2]),
-        });
+        
+        // Setting this value by default. 
+        const matcapTextures_rgbk = new THREE.TextureLoader().load(clayRGBKTexturePath);
+        meshMaterial = createMatCapMaterial(matcapTextures_rgbk, color);
+        meshMaterial.color = new THREE.Color(1, 1, 1);
+        // console.log("color", color);
+        // meshMaterial = new THREE.MeshLambertMaterial({
+        //   color: new THREE.Color(color[0], color[1], color[2]),
+        // });
+
+
+
+
       }
       this.objectColors.set(key, color);
       if (color.length > 3 && color[3] < 1.0) {

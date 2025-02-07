@@ -4,7 +4,8 @@ import {
 	Color,
 	TextureEncoding,
 	WebGLRenderTarget
-} from '../../../src/Three';
+} from 'three';
+
 
 export interface ReflectorOptions {
 	color?: Color;

@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-var DeclarationBundlerPlugin = require('declaration-bundler-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -19,17 +19,27 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
           "style-loader",
-          // Translates CSS into CommonJS
           "css-loader",
-          // Compiles Sass to CSS
           "sass-loader",
         ],
       },
       {
         test: /\.txt$/i,
         use: "raw-loader",
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'images',
+              publicPath: 'images',
+            },
+          },
+        ],
       },
     ],
   },
@@ -44,17 +54,16 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "index.html")
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/data/img', to: 'images' }
+      ]
     })
   ],
   devServer: {
-    static: path.join(__dirname, "dist"),
-    client: {
-      overlay: {
-         warnings: false,
-         errors: true
-       }
-    },
-    // compress: true,
-    port: 9000,
-  },
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 9000
+  }
 };
