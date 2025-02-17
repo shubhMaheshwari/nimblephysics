@@ -30,6 +30,17 @@ type Text = {
   contents: string;
 };
 
+type Dropdown = {
+  type: "dropdown";
+  container: HTMLDivElement;
+  selectElem: HTMLSelectElement;
+  key: number;
+  from_top_left: number[];
+  size: number[];
+  label: string;
+  options: string[];
+};
+
 type Button = {
   type: "button";
   container: HTMLElement;
@@ -189,7 +200,7 @@ class DARTView {
 
   objects: Map<number, THREE.Group | THREE.Mesh | THREE.Line>;
   meshLines: Map<number, MeshLine>;
-  meshLineGeometry: Map<number, THREE.Geometry>;
+  uiElements: Map<number, Text | Button | Dropdown | Slider | SimplePlot | RichPlot>;
   objectColors: Map<number, number[]>;
   keys: Map<THREE.Object3D, number>;
   textures: Map<number, THREE.Texture>;
@@ -973,7 +984,18 @@ class DARTView {
         maxY,
         command.set_plot_data.ys
       );
-    }
+    }   
+    
+    // Dropdown ...
+    else if (command.dropdown != null) {
+      const key = command.dropdown.key;
+      const label = command.dropdown.label;
+      const options = command.dropdown.options;
+      const from_top_left = [command.dropdown.pos[0], command.dropdown.pos[1]];
+      const size = [command.dropdown.pos[2], command.dropdown.pos[3]];
+      const layer = command.dropdown.layer;
+      this.createDropdown(key, label, options, from_top_left, size, layer);
+    } 
   };
 
   /**
@@ -1963,6 +1985,60 @@ class DARTView {
     text.container.innerHTML = contents;
     this.uiElements.set(key, text);
   };
+
+  changeSubject = (value: string) => {
+    console.log("changeSubject", value);
+  } 
+
+
+  /**
+   * This adds a button to the GUI. This is visible immediately even if you don't call render()
+   */
+  createDropdown = (
+    key: number,
+    label: string,
+    options: string[],
+    from_top_left: number[],
+    size: number[],
+    layer: number
+  ) => {
+    this.deleteUIElement(key);
+    let container: HTMLDivElement = this._createUIElementContainer(
+      key,
+      from_top_left,
+      size
+    );
+    // Create select element
+    let selectElem = document.createElement("select");
+    selectElem.className = "DARTWindow-dropdown";
+    
+    // Add options
+    options.forEach(optionText => {
+      let option = document.createElement("option");
+      option.value = optionText;
+      option.text = optionText;
+      selectElem.appendChild(option);
+    });
+
+    // Add change handler
+    selectElem.onchange = () => this.changeSubject(selectElem.value);
+    
+    container.appendChild(selectElem);
+
+    let dropdown: Dropdown = {
+      type: "dropdown",
+      container,
+      selectElem,
+      key,
+      from_top_left, 
+      size,
+      label,
+      options
+    };
+    this.uiElements.set(key, dropdown);
+  };
+
+
 
   /**
    * This adds a button to the GUI. This is visible immediately even if you don't call render()

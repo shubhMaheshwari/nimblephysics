@@ -3,3 +3,4 @@ dist
 replace_diffdart.sh
 src/data/movement2.csv
 src/data/movement2.bin
+package-lock.json

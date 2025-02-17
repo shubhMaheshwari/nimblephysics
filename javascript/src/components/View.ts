@@ -41,7 +41,10 @@ class View {
     this.width = this.parent.getBoundingClientRect().width;
     this.height = this.parent.getBoundingClientRect().height;
 
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      logarithmicDepthBuffer: true // <-- Set render to use logarithmic depth buffer
+    });
     this.renderer.setSize(this.width, this.height);
     (this.renderer as any).shadowMap.enabled = true;
     (this.renderer as any).shadowMap.type = THREE.PCFSoftShadowMap;

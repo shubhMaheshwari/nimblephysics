@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: {
     live: "./src/live.ts",
     NimbleStandaloneReact: "./src/NimbleStandaloneReact.ts",
@@ -62,8 +63,8 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    static: path.join(__dirname, "dist"),
     compress: true,
-    port: 9000
+    port: 19000
   }
 };

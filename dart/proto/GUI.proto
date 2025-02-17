@@ -47,6 +47,7 @@ message Command {
     SetSliderMin set_slider_min = 26;
     SetSliderMax set_slider_max = 27;
     SetPlotData set_plot_data = 28;
+    Dropdown dropdown = 40;
   }
 }
 
@@ -312,4 +313,12 @@ message SetPlotData {
   repeated float bounds = 4;
   repeated float xs = 5;
   repeated float ys = 6;
+}
+
+message Dropdown {
+  int32 key = 1;
+  string label = 2;
+  repeated string options = 3;
+  repeated int32 pos = 4;
+  int32 layer = 5;
 }
