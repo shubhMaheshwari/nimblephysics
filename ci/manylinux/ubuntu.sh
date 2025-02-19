@@ -1,6 +1,24 @@
 #!/bin/bash
 set -e
 
+NIMBLE_DIR=$(pwd)
+
+# sudo -s
+
+cd $NIMBLE_DIR
+
+# Install cmake 
+# wget https://github.com/Kitware/CMake/releases/download/v3.31.5/cmake-3.31.5.tar.gz
+CMAKE_VERSION=$(command -v cmake &> /dev/null && cmake --version | head -n1 | cut -d' ' -f3 | cut -d'.' -f1-2 || echo "0.0")
+if [ "$CMAKE_VERSION" < "3.20" ]; then
+wget https://github.com/Kitware/CMake/releases/download/v3.31.5/cmake-3.31.5-linux-x86_64.sh
+cp cmake-3.31.5-linux-x86_64.sh /opt/
+pushd /opt/
+chmod +x cmake-3.31.5-linux-x86_64.sh
+bash cmake-3.31.5-linux-x86_64.sh
+ln -s /opt/cmake-3.31.5-linux-x86_64*/bin/* /usr/local/bin
+popd
+fi
 # Update the pkgconfig path
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig/
 
@@ -13,8 +31,8 @@ tar -zxf eigen.tar.gz
 pushd eigen-3.3.7
 mkdir build
 pushd build
-cmake ..
-make install -j14
+cmake -DENABLE_DOUBLE_PRECISION=ON -DBUILD_SHARED_LIBS=ON ..
+make && make install -j14
 popd
 popd
 rm -rf eigen-3.3.7
@@ -24,7 +42,7 @@ git clone https://github.com/danfis/libccd.git
 pushd libccd
 mkdir build
 pushd build
-cmake ..
+cmake -DENABLE_DOUBLE_PRECISION=ON -DBUILD_SHARED_LIBS=ON .. 
 make install -j14
 popd
 popd
@@ -263,3 +281,16 @@ sudo cp mpreal.h /usr/include/
 popd
 rm -rf mpreal-mpfrc-3.6.8
 rm mpfrc++-3.6.8.tar.gz
+
+
+# Install ezc3d
+rm -rf ezc3d # Clean up existing directory if it exists
+git clone https://github.com/pyomeca/ezc3d.git
+pushd ezc3d
+mkdir build
+pushd build
+cmake ..
+make install -j10
+popd
+popd
+rm -rf ezc3d
