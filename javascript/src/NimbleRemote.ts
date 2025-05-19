@@ -69,6 +69,7 @@ class DARTRemote {
    * This reads and handles a command sent from the backend
    */
   handleCommand = (command: dart.proto.Command) => {
+    // console.log("Received command: ", command);
     // We manually handle any "interactive" commands here, since the NimbleView object by itself doesn't know what to do with those.
     if (command.button != null) {
       const from_top_left: number[] = [command.button.pos[0], command.button.pos[1]];
@@ -117,7 +118,27 @@ class DARTRemote {
         },
         command.slider.layer
       );
-    } else {
+    }
+    // Dropdown ...
+    else if (command.dropdown != null) {
+      console.log("Creating dropdown: ", command.dropdown);
+      this.view.createDropdown(
+        command.dropdown.key,
+        command.dropdown.options,
+        command.dropdown.container_name,
+        command.dropdown.location,
+        (key: number, value: string) => {
+          const message = JSON.stringify({
+            type: "dropdown_change",
+            key,
+            value,
+          });
+          if (this.socket != null && this.socket.readyState == WebSocket.OPEN) {
+            this.socket.send(message);
+          }
+        });
+        }
+    else {
       // Otherwise, the command doesn't require any interactive callbacks, so NimbleView can handle it directly.
       this.view.handleCommand(command);
     }

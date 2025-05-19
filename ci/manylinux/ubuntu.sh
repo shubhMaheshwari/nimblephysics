@@ -48,8 +48,8 @@ popd
 popd
 rm -rf libccd
 
-# Install ASSIMP
-git clone https://github.com/assimp/assimp.git
+# Install ASSIMP (latest version of assimp has issue passing ply files) use 5.0.0
+git clone --branch v5.0.0 https://github.com/assimp/assimp.git                                                                                                                                
 pushd assimp
 mkdir build
 pushd build
@@ -107,8 +107,8 @@ rm -rf fcl
 
 # Install octomap
 git clone https://github.com/OctoMap/octomap.git
-git checkout v1.8.1
 pushd octomap
+git checkout v1.8.1
 mkdir build
 pushd build
 cmake ..
@@ -118,7 +118,7 @@ popd
 rm -rf octomap
 
 # Install tinyxml2
-git clone https://github.com/leethomason/tinyxml2.git
+git clone https://github.com/gonultasbu/tinyxml2
 pushd tinyxml2
 mkdir build
 pushd build
@@ -154,15 +154,7 @@ popd
 rm -rf OpenSceneGraph
 
 # Install tinyxml1
-git clone https://github.com/robotology-dependencies/tinyxml.git
-pushd tinyxml
-mkdir build
-pushd build
-cmake ..
-make install -j10
-popd
-popd
-rm -rf tinyxml
+apt-get install libtinyxml2-dev
 
 # Install urdfdom_headers
 git clone https://github.com/ros/urdfdom_headers.git
@@ -170,7 +162,7 @@ pushd urdfdom_headers
 mkdir build
 pushd build
 cmake ..
-make install -j10
+sudo make install -j10
 popd
 popd
 rm -rf urdfdom_headers
@@ -185,6 +177,16 @@ make install -j10
 popd
 popd
 rm -rf console_bridge
+
+# Install urdfdom headers
+git clone https://github.com/ros/urdfdom_headers.git
+pushd urdfdom_headers
+mkdir build && pushd build
+cmake ..
+make install -j10
+popd && popd
+rm -rf urdfdom_headers
+
 
 # Install urdfdom
 git clone https://github.com/ros/urdfdom.git
@@ -222,14 +224,14 @@ popd
 rm -rf protobuf-${PROTOBUF_VERSION}
 
 # Install GRPC
-git clone --recurse-submodules -b v1.33.2 https://github.com/grpc/grpc
+git clone --recurse-submodules -b v1.35.0 https://github.com/grpc/grpc
 pushd grpc
 mkdir -p cmake/build
 pushd cmake/build
 cmake -DgRPC_INSTALL=ON \
       -DgRPC_BUILD_TESTS=OFF \
       ../..
-make -j
+make -j 4
 make install
 popd
 popd
@@ -294,3 +296,13 @@ make install -j10
 popd
 popd
 rm -rf ezc3d
+
+
+
+mkdir build
+cd build
+cmake .. -DDART_BUILD_SHARED_LIBS=ON \
+         -DDART_VERBOSE=ON \
+         -DCMAKE_BUILD_TYPE=Release \
+         -DBUILD_PYTHON=ON
+make -j 4

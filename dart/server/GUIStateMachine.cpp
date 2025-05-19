@@ -125,6 +125,15 @@ std::string GUIStateMachine::getCurrentStateAsJson()
     encodeEnableEditTooltip(list, key);
   }
 
+  for (auto pair : mCollapsibleContainers)
+  {
+    encodeCollapsibleContainer(list, pair.second);
+  }
+  for (auto pair : mDropDowns)
+  {
+    encodeDropDown(list, pair.second);
+  }
+
   return list.SerializeAsString();
 }
 
@@ -2144,6 +2153,38 @@ void GUIStateMachine::deleteUIElement(const std::string& key)
   });
 }
 
+
+/// This creates a collapsible container with the given name
+void GUIStateMachine::createCollapsibleContainer(const std::string& containerName, Eigen::Vector2i location){
+  const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
+  CollapsibleContainer container;
+  container.key = containerName;
+  container.location = location;
+
+  mCollapsibleContainers[containerName] = container;
+
+  queueCommand([&](proto::CommandList& list) {
+    encodeCollapsibleContainer(list, container);
+  });
+}
+
+/// This registers a listener that will get called when the dropdown value changes
+void GUIStateMachine::createDropDown(const std::string& dropdownKey, const std::vector<std::string>& options, const std::string& containerName, Eigen::Vector2i location,  std::function<void(const std::string&)> onChange){
+  const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
+  DropDown dropdown; 
+  dropdown.key = dropdownKey;
+  dropdown.options = options;
+  dropdown.containerName = containerName;
+  dropdown.location = location;
+  dropdown.onChange = onChange;
+  mDropDowns[dropdownKey] = dropdown;
+
+  queueCommand([&](proto::CommandList& list) {
+    encodeDropDown(list, dropdown);
+  });
+
+}
+
 /// This gets an integer code for a string
 int GUIStateMachine::getStringCode(const std::string& key)
 {
@@ -2560,6 +2601,37 @@ void GUIStateMachine::encodeSetRichPlotData(
     command->mutable_set_rich_plot_data()->add_ys((double)y);
   }
 }
+
+
+void GUIStateMachine::encodeCollapsibleContainer(
+    proto::CommandList& list, const CollapsibleContainer& container)
+{
+  proto::Command* command = list.add_command();
+  command->mutable_collapsible_container()->set_key(getStringCode(container.key));
+  command->mutable_collapsible_container()->add_location(container.location(0));
+  command->mutable_collapsible_container()->add_location(container.location(1));
+}
+
+void GUIStateMachine::encodeDropDown(
+    proto::CommandList& list, const DropDown& dropdown)
+{
+  proto::Command* command = list.add_command();
+  command->mutable_dropdown()->set_key(getStringCode(dropdown.key));
+  command->mutable_dropdown()->add_location(dropdown.location(0)); 
+  command->mutable_dropdown()->add_location(dropdown.location(1)); 
+  command->mutable_dropdown()->set_container_name(dropdown.containerName);
+  for (const auto& option : dropdown.options)
+  {
+    command->mutable_dropdown()->add_options(option);
+  }
+}
+
+
+
+// } // namespace gui
+
+
+
 
 } // namespace server
 } // namespace dart

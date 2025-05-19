@@ -2,7 +2,7 @@ import NimbleStandalone from "./NimbleStandalone";
 import NimbleStandaloneReact from "./NimbleStandaloneReact";
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import rawURL from '!!file-loader!./data/movement2.bin';
+import rawURL from '!!file-loader!./data/movement.bin';
 // import rawURL from '!!file-loader!./data/movement2.bin.gz';
 // import rawBinary from '!!arraybuffer-loader!./data/spring_spine_3_35cm_0N.bin';
 // import rawBinary from '!!arraybuffer-loader!./data/sprint_zero_residuals.bin';

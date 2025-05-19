@@ -461,6 +461,14 @@ public:
   /// This gets a string code for an integer
   std::string getCodeString(int code);
 
+
+  /// This creates a collapsible container with the given name
+  void createCollapsibleContainer(const std::string& containerName, Eigen::Vector2i location);
+  /// This registers a listener that will get called when the dropdown value changes
+  void createDropDown(const std::string& dropdownKey, const std::vector<std::string>& options, const std::string& containerName, Eigen::Vector2i location, std::function<void(const std::string&)> onChange);
+
+
+
 protected:
   // protects the buffered JSON message (mJson) from getting
   // corrupted if we queue messages while trying to flush()
@@ -688,6 +696,23 @@ protected:
   };
   std::unordered_map<std::string, RichPlot> mRichPlots;
 
+  // Handle dropdowns and collapsible containers
+  struct DropDown
+  {
+    std::string key;
+    std::vector<std::string> options;
+    std::string containerName;
+    Eigen::Vector2i location;
+    std::function<void(const std::string&)> onChange;
+  };
+  std::unordered_map<std::string, DropDown> mDropDowns;
+  struct CollapsibleContainer
+  {
+    std::string key;
+    Eigen::Vector2i location;
+  };
+  std::unordered_map<std::string, CollapsibleContainer> mCollapsibleContainers;
+
   void queueCommand(std::function<void(proto::CommandList&)> writeCommand);
 
   void encodeSetFramesPerSecond(proto::CommandList& list, int framesPerSecond);
@@ -715,7 +740,17 @@ protected:
       proto::CommandList& list,
       const std::string& plotKey,
       const RichPlotData& data);
-};
+
+  void encodeCollapsibleContainer(
+      proto::CommandList& list,
+      const CollapsibleContainer& container);
+
+
+  void encodeDropDown(
+    proto::CommandList& list,
+    const DropDown& dropDown); 
+
+}; // class GUIStateMachine
 
 } // namespace server
 } // namespace dart

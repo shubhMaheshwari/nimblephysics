@@ -86,7 +86,7 @@ class Layer {
     nameColor.style.marginRight = '7px';
     nameColor.style.display = 'inline-block';
     nameColor.style.verticalAlign = 'middle';
-    nameColor.style.backgroundColor = 'rgba('+(color[0]*255)+','+(color[1]*255)+','+(color[2]*255)+','+color[3]+')';
+    nameColor.style.backgroundColor = 'rgba(' + (color[0] * 255) + ',' + (color[1] * 255) + ',' + (color[2] * 255) + ',' + color[3] + ')';
     nameCell.appendChild(nameColor);
     const nameSpan = document.createElement("span");
     nameSpan.innerHTML = this.name === '' ? 'Default' : this.name;
@@ -119,7 +119,7 @@ class Layer {
   };
 
   show = () => {
-    console.log("Show: "+this.name);
+    console.log("Show: " + this.name);
     this.shown = true;
     this.objects.forEach((key) => {
       this.view.showObject(key);
@@ -454,7 +454,7 @@ class DARTView {
   };
 
   initGroundPlane() {
-    let tex = new THREE.TextureLoader().load( groundConcreteTexture); 
+    let tex = new THREE.TextureLoader().load(groundConcreteTexture);
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
     this.groundPlane = new Reflector(new THREE.PlaneBufferGeometry(1000, 1000), {
@@ -464,24 +464,24 @@ class DARTView {
       color: new THREE.Color(0x777777),
     }) as unknown as THREE.Mesh;
     console.log("Initial ground size: ", this.container.offsetWidth, this.container.offsetHeight);
-    
+
     const material = this.groundPlane.material as THREE.ShaderMaterial;
     material.vertexShader = groundPlaneVertexShader;
     material.fragmentShader = groundPlaneFragmentShader;
     material.uniforms.tex = { value: tex };
     material.uniforms.alpha = { value: 0.5 };
     let uvs = new Float32Array(4 * 2);
-    
+
     const geometry = this.groundPlane.geometry as THREE.PlaneBufferGeometry;
     geometry.setAttribute(
       "texture_uv",
-      new THREE.BufferAttribute(Float32Array.from([0, 0, 0, 1/2, 1/2, 0, 1/2, 1/2]), 2)
+      new THREE.BufferAttribute(Float32Array.from([0, 0, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2]), 2)
     );
     this.groundPlane.rotateX(-Math.PI / 2);
     this.scene.add(this.groundPlane);
   };
-  
-  
+
+
   // Add toggle method
   public toggleGroundPlane(enabled: boolean) {
     this.groundPlaneEnabled = enabled;
@@ -505,8 +505,8 @@ class DARTView {
     }
 
     this.tooltip.innerHTML = tooltip;
-    this.tooltip.style.top = top_y+'px';
-    this.tooltip.style.left = top_x+'px';
+    this.tooltip.style.top = top_y + 'px';
+    this.tooltip.style.left = top_x + 'px';
     this.tooltip.style.opacity = '1.0';
     if (JSON.stringify(keys) !== JSON.stringify(this.hovering)) {
       if (this.hovering.length > 0) {
@@ -517,7 +517,7 @@ class DARTView {
 
       keys.forEach((key) => {
         const currentColor = this.objectColors.get(key);
-        let hoverColor = [currentColor[0]*0.7, currentColor[1]*0.7, currentColor[2]*0.7, 1];
+        let hoverColor = [currentColor[0] * 0.7, currentColor[1] * 0.7, currentColor[2] * 0.7, 1];
         this.setObjectColor(key, hoverColor, false);
       })
 
@@ -607,8 +607,8 @@ class DARTView {
     const rect = this.container.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    this.tooltip.style.top = mouseY+'px';
-    this.tooltip.style.left = mouseX+'px';
+    this.tooltip.style.top = mouseY + 'px';
+    this.tooltip.style.left = mouseX + 'px';
   }
 
   onTooltipHoveroff = () => {
@@ -780,7 +780,7 @@ class DARTView {
         if (i % 3 == 0) {
           vertices.push([]);
         }
-        vertices[vertices.length-1].push(command.line.points[i]);
+        vertices[vertices.length - 1].push(command.line.points[i]);
       }
       const width: number[] = command.line.width;
 
@@ -800,22 +800,22 @@ class DARTView {
           vertices.push([]);
           vertexNormals.push([]);
         }
-        vertices[vertices.length-1].push(command.mesh.vertex[i]);
-        vertexNormals[vertexNormals.length-1].push(command.mesh.vertex_normal[i]);
+        vertices[vertices.length - 1].push(command.mesh.vertex[i]);
+        vertexNormals[vertexNormals.length - 1].push(command.mesh.vertex_normal[i]);
       }
       const faces: number[][] = [];
       for (let i = 0; i < command.mesh.face.length; i++) {
         if (i % 3 == 0) {
           faces.push([]);
         }
-        faces[faces.length-1].push(command.mesh.face[i]);
+        faces[faces.length - 1].push(command.mesh.face[i]);
       }
       const uvs: number[][] = [];
       for (let i = 0; i < command.mesh.uv.length; i++) {
         if (i % 2 == 0) {
           uvs.push([]);
         }
-        uvs[uvs.length-1].push(command.mesh.uv[i]);
+        uvs[uvs.length - 1].push(command.mesh.uv[i]);
       }
       const texture_starts: {
         key: number,
@@ -984,18 +984,16 @@ class DARTView {
         maxY,
         command.set_plot_data.ys
       );
-    }   
-    
-    // Dropdown ...
-    else if (command.dropdown != null) {
-      const key = command.dropdown.key;
-      const label = command.dropdown.label;
-      const options = command.dropdown.options;
-      const from_top_left = [command.dropdown.pos[0], command.dropdown.pos[1]];
-      const size = [command.dropdown.pos[2], command.dropdown.pos[3]];
-      const layer = command.dropdown.layer;
-      this.createDropdown(key, label, options, from_top_left, size, layer);
-    } 
+    }
+    else if (command.collapsible_container != null) {
+      this.createCollapsibleContainer(
+        command.collapsible_container.key,
+        command.collapsible_container.location)
+    }
+    else {
+      console.log("Unknown command: ", command);
+
+    }
   };
 
   /**
@@ -1420,7 +1418,7 @@ class DARTView {
         positions[cursor++] = points[i][2] * SCALE_FACTOR;
       }
 
-      (line as any).geometry.setDrawRange( 0, points.length );
+      (line as any).geometry.setDrawRange(0, points.length);
       (line as any).geometry.attributes.position.needsUpdate = true; // required after the first render
       // line.geometry.computeBoundingBox();
       // line.geometry.computeBoundingSphere();
@@ -1491,18 +1489,18 @@ class DARTView {
       const previous = line._attributes.previous.array;
 
       for (let i = 0; i < points.length; i++) {
-        positions[i*6] = points[i][0] * SCALE_FACTOR;
-        positions[i*6 + 1] = points[i][1] * SCALE_FACTOR;
-        positions[i*6 + 2] = points[i][2] * SCALE_FACTOR;
-        positions[i*6 + 3] = points[i][0] * SCALE_FACTOR;
-        positions[i*6 + 4] = points[i][1] * SCALE_FACTOR;
-        positions[i*6 + 5] = points[i][2] * SCALE_FACTOR;
+        positions[i * 6] = points[i][0] * SCALE_FACTOR;
+        positions[i * 6 + 1] = points[i][1] * SCALE_FACTOR;
+        positions[i * 6 + 2] = points[i][2] * SCALE_FACTOR;
+        positions[i * 6 + 3] = points[i][0] * SCALE_FACTOR;
+        positions[i * 6 + 4] = points[i][1] * SCALE_FACTOR;
+        positions[i * 6 + 5] = points[i][2] * SCALE_FACTOR;
       }
 
       ///////////////////////////////////////////////
       var l = positions.length / 6;
 
-      const compareV3 = function(a, b) {
+      const compareV3 = function (a, b) {
         var aa = a * 6;
         var ab = b * 6;
         return (
@@ -1511,7 +1509,7 @@ class DARTView {
           positions[aa + 2] === positions[ab + 2]
         )
       }
-      const copyV3 = function(a) {
+      const copyV3 = function (a) {
         var aa = a * 6
         return [positions[aa], positions[aa + 1], positions[aa + 2]]
       }
@@ -1581,8 +1579,8 @@ class DARTView {
       if (width.length > 0) {
         const rawWidth = line._attributes.width.array;
         for (let i = 0; i < width.length; i++) {
-          rawWidth[i*2] = width[i];
-          rawWidth[i*2 + 1] = width[i];
+          rawWidth[i * 2] = width[i];
+          rawWidth[i * 2 + 1] = width[i];
         }
         line._attributes.width.needsUpdate = true;
       }
@@ -1618,8 +1616,8 @@ class DARTView {
       if (width.length > 0) {
         const rawWidth = line._attributes.width.array;
         for (let i = 0; i < width.length; i++) {
-          rawWidth[i*2] = width[i];
-          rawWidth[i*2 + 1] = width[i];
+          rawWidth[i * 2] = width[i];
+          rawWidth[i * 2 + 1] = width[i];
         }
         line._attributes.width.needsUpdate = true;
       }
@@ -1665,7 +1663,7 @@ class DARTView {
    */
   setObjectWarning = (key: number, warningKey: number, warning: string) => {
     if (!this.objectWarnings.has(warningKey)) {
-      console.log("Creating ObjectWarning for key "+key);
+      console.log("Creating ObjectWarning for key " + key);
       const objectWarning = new ObjectWarning(this, key, warningKey, warning);
       this.objectWarnings.set(warningKey, objectWarning);
     }
@@ -1734,7 +1732,7 @@ class DARTView {
           map: this.textures.get(texture_starts[0].key),
         });
       } else {
-        
+
         // Setting this value by default. 
         const matcapTextures_rgbk = new THREE.TextureLoader().load(clayRGBKTexturePath);
         meshMaterial = createMatCapMaterial(matcapTextures_rgbk, color);
@@ -1986,32 +1984,26 @@ class DARTView {
     this.uiElements.set(key, text);
   };
 
-  changeSubject = (value: string) => {
-    console.log("changeSubject", value);
-  } 
-
-
   /**
-   * This adds a button to the GUI. This is visible immediately even if you don't call render()
+   * This adds a dropdown to the GUI. This is visible immediately even if you don't call render()
    */
   createDropdown = (
     key: number,
-    label: string,
     options: string[],
+    container_name: string,
     from_top_left: number[],
-    size: number[],
-    layer: number
+    onChange?: (key: number, value: string) => void
   ) => {
     this.deleteUIElement(key);
     let container: HTMLDivElement = this._createUIElementContainer(
       key,
       from_top_left,
-      size
+      [200, 30]
     );
     // Create select element
     let selectElem = document.createElement("select");
     selectElem.className = "DARTWindow-dropdown";
-    
+    console.log("options", options);
     // Add options
     options.forEach(optionText => {
       let option = document.createElement("option");
@@ -2021,8 +2013,12 @@ class DARTView {
     });
 
     // Add change handler
-    selectElem.onchange = () => this.changeSubject(selectElem.value);
-    
+    selectElem.onchange = () => {
+      if (onChange) {
+        onChange(key, selectElem.value);
+      }
+    };
+
     container.appendChild(selectElem);
 
     let dropdown: Dropdown = {
@@ -2030,13 +2026,28 @@ class DARTView {
       container,
       selectElem,
       key,
-      from_top_left, 
-      size,
-      label,
-      options
+      from_top_left,
+      size: [200, 30],
+      label: options[0],
+      options: options
     };
     this.uiElements.set(key, dropdown);
   };
+
+  createCollapsibleContainer = (
+    key: number,
+    from_top_left: number[]
+  ) => {
+    this.deleteUIElement(key);
+    let container: HTMLDivElement = this._createUIElementContainer(
+      key,
+      from_top_left,
+      [200, 30]
+    );
+    container.className = "DARTWindow-collapsible-container";
+    this.uiContainer.appendChild(container);
+    return container;
+  }
 
 
 

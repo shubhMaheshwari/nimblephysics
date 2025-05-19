@@ -55,13 +55,13 @@ namespace dynamics {
 const Joint::ActuatorType Joint::DefaultActuatorType
     = detail::DefaultActuatorType;
 // These declarations are needed for linking to work
-constexpr Joint::ActuatorType Joint::FORCE;
-constexpr Joint::ActuatorType Joint::PASSIVE;
-constexpr Joint::ActuatorType Joint::SERVO;
-constexpr Joint::ActuatorType Joint::MIMIC;
-constexpr Joint::ActuatorType Joint::ACCELERATION;
-constexpr Joint::ActuatorType Joint::VELOCITY;
-constexpr Joint::ActuatorType Joint::LOCKED;
+const Joint::ActuatorType Joint::FORCE;
+const Joint::ActuatorType Joint::PASSIVE;
+const Joint::ActuatorType Joint::SERVO;
+const Joint::ActuatorType Joint::MIMIC;
+const Joint::ActuatorType Joint::ACCELERATION;
+const Joint::ActuatorType Joint::VELOCITY;
+const Joint::ActuatorType Joint::LOCKED;
 
 namespace detail {
 

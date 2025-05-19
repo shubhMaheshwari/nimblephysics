@@ -142,6 +142,7 @@ protected:
   std::vector<std::function<void(Eigen::Vector2i)>> mScreenResizeListeners;
   // This is a list of all the objects with mouse interaction enabled
   std::unordered_set<std::string> mMouseInteractionEnabled;
+
 };
 
 } // namespace server

@@ -48,6 +48,8 @@ message Command {
     SetSliderMax set_slider_max = 27;
     SetPlotData set_plot_data = 28;
     Dropdown dropdown = 40;
+    CollapsibleContainer collapsible_container = 41;
+
   }
 }
 
@@ -317,8 +319,13 @@ message SetPlotData {
 
 message Dropdown {
   int32 key = 1;
-  string label = 2;
   repeated string options = 3;
-  repeated int32 pos = 4;
-  int32 layer = 5;
+  string container_name = 4;
+  repeated int32 location = 2; // [x, y]
+}
+
+
+message CollapsibleContainer {
+  int32 key = 1;
+  repeated int32 location = 2; // [x, y]
 }

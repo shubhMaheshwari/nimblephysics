@@ -205,6 +205,20 @@ void GUIWebsocketServer::serve(int port)
         handler(tooltip);
       }
     }
+    else if (args["type"].asString() == "dropdown_change")
+    {
+      std::string key = this->getCodeString(args["key"].asInt());
+      std::string value = args["value"].asString();
+      if (mDropDowns.find(key) != mDropDowns.end())
+      { 
+        mDropDowns[key].onChange(value);
+      }
+      
+    }
+    else {
+      std::cerr << "GUIWebsocketServer received an unknown message type: "
+                << args["type"].asString() << std::endl;
+    }
   });
 
   // unblock signals in this thread

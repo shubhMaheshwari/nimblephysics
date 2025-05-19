@@ -111,6 +111,19 @@ void GUIWebsocketServer(py::module& m)
           "registerTooltipChangeListener",
           &dart::server::GUIWebsocketServer::registerTooltipChangeListener,
           ::py::arg("key"),
+          ::py::arg("listener"))
+      .def(
+          "createCollapsibleContainer",
+          &dart::server::GUIWebsocketServer::createCollapsibleContainer,
+          ::py::arg("containerName"),
+          ::py::arg("location"))
+      .def(
+          "createDropDown",
+          &dart::server::GUIWebsocketServer::createDropDown,
+          ::py::arg("dropdownKey"),
+          ::py::arg("options"),
+          ::py::arg("containerName"),
+          ::py::arg("location"),
           ::py::arg("listener"));
 }
 

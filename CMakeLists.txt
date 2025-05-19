@@ -156,9 +156,12 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug | Release | RelWithDebInfo | MinSizeRel" FORCE)
 endif()
 
+
+
+
 string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPERCASE)
 
-set(BUILD_TYPE_DEBUG FALSE)
+set(BUILD_TYPE_DEBUG TRUE)
 set(BUILD_TYPE_RELEASE FALSE)
 set(BUILD_TYPE_RELWITHDEBINFO FALSE)
 set(BUILD_TYPE_MINSIZEREL FALSE)
@@ -243,8 +246,8 @@ elseif(CMAKE_COMPILER_IS_GNUCXX)
     message(FATAL_ERROR "The installed g++ version is ${GCC_VERSION}. ${PROJECT_NAME} requires g++ 5.3.1 or greater.")
   endif()
 
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-omit-frame-pointer -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -fno-var-tracking-assignments")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-omit-frame-pointer -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls -fno-var-tracking-assignments")
 
   if(DART_FAST_DEBUG)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O1")
@@ -292,6 +295,11 @@ endif()
 if(APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 endif()
+
+# Prevent stripping
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -rdynamic")
+
 
 # ===============================================================================
 # Print build summary
@@ -422,13 +430,13 @@ install(FILES package.xml DESTINATION
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data"
   DESTINATION ${DART_ADDITIONAL_DOCUMENTATION_INSTALL_PATH})
 
-# Examples source
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples"
-  DESTINATION ${DART_ADDITIONAL_DOCUMENTATION_INSTALL_PATH})
+# # Examples source
+# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+#   DESTINATION ${DART_ADDITIONAL_DOCUMENTATION_INSTALL_PATH})
 
-# Tutorials source
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
-  DESTINATION ${DART_ADDITIONAL_DOCUMENTATION_INSTALL_PATH})
+# # Tutorials source
+# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorials"
+#   DESTINATION ${DART_ADDITIONAL_DOCUMENTATION_INSTALL_PATH})
 
 # ===============================================================================
 # Python bindings
