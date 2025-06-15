@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime";
 import NimbleView from "./NimbleView";
 import NimbleRemote from "./NimbleRemote";
 
@@ -30,18 +31,19 @@ console.log('Attempting WebSocket connection to:', wsUrl);
 const remote = new NimbleRemote(wsUrl, view);
 
 // Add error handling
-remote.socket.onerror = (error) => {
-  console.error('WebSocket connection error:', error);
-};
+if (remote != null && remote.socket != null) {
+  remote.socket.onerror = (error) => {
+    console.error('WebSocket connection error:', error);
+  };
 
-remote.socket.onclose = (event) => {
-  console.log('WebSocket closed:', event.code, event.reason);
-};
+  remote.socket.onclose = (event) => {
+    console.log('WebSocket closed:', event.code, event.reason);
+  };
 
-remote.socket.onopen = () => {
-  console.log('WebSocket connection established');
-};
-
+  remote.socket.onopen = () => {
+    console.log('WebSocket connection established');
+  };
+}
 
 // Function to update container size
 const updateContainerSize = () => {

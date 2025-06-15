@@ -320,6 +320,19 @@ void GUIStateMachine(py::module& m)
           ::py::arg("plotType"),
           ::py::arg("layer") = "")
       .def(
+            "createCollapsibleContainer",
+            &dart::server::GUIStateMachine::createCollapsibleContainer,
+            ::py::arg("label"),
+            ::py::arg("pos"),
+            ::py::arg("size"))
+      .def(
+            "createDropDown",
+            &dart::server::GUIStateMachine::createDropDown,
+            ::py::arg("label"),
+            ::py::arg("options"),
+            ::py::arg("layer"),
+            ::py::arg("listener"))
+      .def(
           "setUIElementPosition",
           &dart::server::GUIStateMachine::setUIElementPosition,
           ::py::arg("key"),

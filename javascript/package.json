@@ -51,6 +51,7 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
     "google-protobuf": "^3.20.1",
+    "regenerator-runtime": "^0.14.1",
     "sha256-uint8array": "^0.10.3",
     "three": "0.121.1"
   }

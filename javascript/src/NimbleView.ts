@@ -7,6 +7,7 @@ import View from "./components/View";
 import Slider from "./components/Slider";
 import SimplePlot from "./components/SimplePlot";
 import RichPlot from "./components/RichPlot";
+import BigeContainer from "./components/BigeContainer";
 import { dart } from './proto/GUI';
 import { MeshLine, MeshLineMaterial } from './THREE.MeshLine';
 import VERSION_NUM from "../../VERSION.txt";
@@ -18,6 +19,7 @@ import groundConcreteTexture from '!!file-loader!./data/img/concrete.png';
 import clayRGBKTexturePath from '!!file-loader!./data/img/clay_rgbk.png';
 
 import { groundPlaneVertexShader, groundPlaneFragmentShader, createMatCapMaterial } from './polyscope/shader';
+import { X } from "@mui/icons-material";
 
 const SCALE_FACTOR = 100;
 
@@ -50,6 +52,18 @@ type Button = {
   size: number[];
   label: string;
 };
+
+type CollapsibleContainer = {
+  type: "collapsible";
+  container: HTMLDivElement;
+  key: number;
+  from_top_left: number[];
+  size: number[];
+};
+
+
+
+
 
 class Layer {
   view: DARTView;
@@ -200,7 +214,6 @@ class DARTView {
 
   objects: Map<number, THREE.Group | THREE.Mesh | THREE.Line>;
   meshLines: Map<number, MeshLine>;
-  uiElements: Map<number, Text | Button | Dropdown | Slider | SimplePlot | RichPlot>;
   objectColors: Map<number, number[]>;
   keys: Map<THREE.Object3D, number>;
   textures: Map<number, THREE.Texture>;
@@ -211,7 +224,7 @@ class DARTView {
   mouseoverWarningListeners: Map<number, (over: boolean) => void>;
   dismissedWarnings: Set<number>;
 
-  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot>;
+  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot | Dropdown | CollapsibleContainer | BigeContainer>;
 
   dragListeners: ((key: number, pos: number[]) => void)[];
   dragEndListeners: ((key: number) => void)[];
@@ -441,7 +454,228 @@ class DARTView {
     );
     this.coneGeometry = new THREE.ConeBufferGeometry(SCALE_FACTOR, SCALE_FACTOR, NUM_SPHERE_SEGMENTS, 1, false);
     this.cylinderGeometry = new THREE.CylinderBufferGeometry(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR, NUM_SPHERE_SEGMENTS, 1, false);
+  
+  
+    // Let's test bige demo here
+    this.testBigeContainer();
+
   }
+/**
+   * Enhanced test method for BIGE container with dynamic dropdowns
+   */
+testBigeContainer = () => {
+  console.log("Testing BIGE container creation with dynamic dropdowns...");
+      
+    // Create a BIGE container with a custom title
+    const bigeContainer = this.createCollapsibleContainer(
+      9999, // unique key for testing
+      [60, 5], // position: 60% from left, 5% from top
+      [35, 55], // size: 35% width, 55% height (increased for more dropdowns)
+      "Exercise Analysis Tool" // Custom title
+    );
+
+  if (bigeContainer) {
+    // Test 1: Add initial dropdowns (simulating messages)
+    console.log("Phase 1: Adding initial dropdowns...");
+    
+    setTimeout(() => {
+      // Exercise Type (full width)
+      bigeContainer.addDropdown({
+        id: 'exercise',
+        label: 'Exercise Type',
+        options: ['Squat', 'Deadlift', 'Bench Press', 'Overhead Press'],
+        defaultValue: 'Squat',
+        gridPosition: 'full',
+        onChange: (value) => console.log('Exercise changed to:', value)
+      });
+
+      // Trial and Subject (grid layout)
+      bigeContainer.addDropdown({
+        id: 'trial',
+        label: 'Trial',
+        options: ['Trial1', 'Trial2', 'Trial3', 'Trial4'],
+        defaultValue: 'Trial1',
+        gridPosition: 'left'
+      });
+
+      bigeContainer.addDropdown({
+        id: 'subject',
+        label: 'Subject',
+        options: ['Subject1', 'Subject2', 'Subject3', 'Subject4'],
+        defaultValue: 'Subject1',
+        gridPosition: 'right'
+      });
+
+      // Dataset (full width)
+      bigeContainer.addDropdown({
+        id: 'dataset',
+        label: 'Dataset',
+        options: ['Dataset1', 'Dataset2', 'Dataset3'],
+        defaultValue: 'Dataset1',
+        gridPosition: 'full'
+      });
+
+      console.log('Initial state:', bigeContainer.getState());
+    }, 500);
+
+    // Test 2: Update dropdown options (simulating new messages)
+    setTimeout(() => {
+      console.log("Phase 2: Updating dropdown options...");
+      
+      // Update exercise options
+      bigeContainer.updateDropdownOptions('exercise', 
+        ['Squat', 'Deadlift', 'Bench Press', 'Overhead Press', 'Lunge'], 
+        'Deadlift'
+      );
+
+      // Add new dropdowns dynamically
+      bigeContainer.addDropdown({
+        id: 'equipment',
+        label: 'Equipment',
+        options: ['Barbell', 'Dumbbell', 'Kettlebell', 'Bodyweight'],
+        defaultValue: 'Barbell',
+        gridPosition: 'left'
+      });
+
+      bigeContainer.addDropdown({
+        id: 'difficulty',
+        label: 'Difficulty',
+        options: ['Beginner', 'Intermediate', 'Advanced'],
+        defaultValue: 'Intermediate',
+        gridPosition: 'right'
+      });
+
+      console.log('Updated state:', bigeContainer.getState());
+    }, 2000);
+
+    // Test 3: Programmatic value changes
+    setTimeout(() => {
+      console.log("Phase 3: Testing programmatic changes...");
+      
+      bigeContainer.setValue('exercise', 'Bench Press');
+      bigeContainer.setValue('trial', 'Trial3');
+      bigeContainer.setValue('isCollapsed', true);
+      
+      console.log('After programmatic changes:', bigeContainer.getState());
+      
+      // Test getting individual values
+      console.log('Exercise value:', bigeContainer.getDropdownValue('exercise'));
+      console.log('All dropdown values:', bigeContainer.getAllDropdownValues());
+    }, 4000);
+
+    // Test 4: Remove some dropdowns
+    setTimeout(() => {
+      console.log("Phase 4: Testing dropdown removal...");
+      
+      bigeContainer.removeDropdown('difficulty');
+      bigeContainer.toggleCollapse(); // Expand again
+      
+      console.log('After removal:', bigeContainer.getState());
+    }, 6000);
+
+    // Test 5: Stress test with many dropdowns
+    setTimeout(() => {
+      console.log("Phase 5: Stress testing with multiple dropdowns...");
+      
+      for (let i = 1; i <= 3; i++) {
+        bigeContainer.addDropdown({
+          id: `custom${i}`,
+          label: `Custom Field ${i}`,
+          options: [`Option1-${i}`, `Option2-${i}`, `Option3-${i}`],
+          defaultValue: `Option1-${i}`,
+          gridPosition: i % 2 === 0 ? 'right' : 'left'
+        });
+      }
+      
+      console.log('After stress test:', bigeContainer.getState());
+    }, 8000);
+
+    // Optional cleanup
+    setTimeout(() => {
+      console.log("Cleaning up test BIGE container...");
+      this.deleteUIElement(9999);
+    }, 15000);
+  }
+};
+
+/**
+ * Test method for simulating message-based dropdown creation
+ */
+testBigeContainerMessages = () => {
+  console.log("Testing BIGE container with simulated messages...");
+  
+  const bigeContainer = this.createCollapsibleContainer(
+    9998, 
+    [5, 5], 
+    [30, 50],
+    "Message-Based Demo" // Custom title
+  );
+  
+  
+  if (bigeContainer) {
+    // Simulate receiving messages to create dropdowns
+    const messages = [
+      {
+        type: 'add_dropdown',
+        data: {
+          id: 'exercise_type',
+          label: 'Exercise Type',
+          options: ['Squat', 'Deadlift'],
+          defaultValue: 'Squat',
+          gridPosition: 'full'
+        }
+      },
+      {
+        type: 'add_dropdown',
+        data: {
+          id: 'weight',
+          label: 'Weight (kg)',
+          options: ['50', '75', '100', '125'],
+          defaultValue: '75',
+          gridPosition: 'left'
+        }
+      },
+      {
+        type: 'add_dropdown',
+        data: {
+          id: 'reps',
+          label: 'Repetitions',
+          options: ['5', '8', '10', '12'],
+          defaultValue: '8',
+          gridPosition: 'right'
+        }
+      },
+      {
+        type: 'update_dropdown',
+        data: {
+          id: 'exercise_type',
+          options: ['Squat', 'Deadlift', 'Bench Press'],
+          defaultValue: 'Bench Press'
+        }
+      }
+    ];
+
+    // Process messages with delays
+    messages.forEach((message, index) => {
+      setTimeout(() => {
+        console.log(`Processing message ${index + 1}:`, message);
+        
+        if (message.type === 'add_dropdown') {
+          bigeContainer.addDropdown(message.data as DropdownConfig);
+        } else if (message.type === 'update_dropdown') {
+          bigeContainer.updateDropdownOptions(
+            message.data.id,
+            message.data.options,
+            message.data.defaultValue
+          );
+        }
+        
+        console.log('Current state:', bigeContainer.getState());
+      }, (index + 1) * 1000);
+    });
+  }
+};
+
 
   setBackgroundColor = (color: string) => {
     this.backgroundColor = color;
@@ -851,6 +1085,25 @@ class DARTView {
     else if (command.texture != null) {
       this.createTexture(command.texture.key, command.texture.base64);
     }
+    else if (command.collapsible_container != null) {
+      const from_top_left: number[] = [command.collapsible_container.pos[0], command.collapsible_container.pos[1]];
+      const size: number[] = [command.collapsible_container.pos[2], command.collapsible_container.pos[3]];
+
+      // Create BIGE container instead of collapsible container
+      const bigeContainer = this.createCollapsibleContainer(
+        command.collapsible_container.key,
+        from_top_left,
+        size,
+        command.collapsible_container.label
+      );
+      
+      console.log("Handle command created a BIGE container", command.collapsible_container.key, command.collapsible_container.label, command.collapsible_container.pos);
+      
+      // Store in layer if specified
+      if (command.collapsible_container.layer != null && this.layers.has(command.collapsible_container.layer)) {
+        this.layers.get(command.collapsible_container.layer).addUIElement(command.collapsible_container.key);
+      }
+    }
     else if (command.set_object_position != null) {
       const data = command.set_object_position.data;
       const pos: number[] = [data[0], data[1], data[2]];
@@ -880,6 +1133,7 @@ class DARTView {
     else if (command.text != null) {
       const from_top_left: number[] = [command.text.pos[0], command.text.pos[1]];
       const size: number[] = [command.text.pos[2], command.text.pos[3]];
+      
       this.createText(
         command.text.key,
         from_top_left,
@@ -887,6 +1141,7 @@ class DARTView {
         command.text.contents,
         command.text.layer
       );
+      console.log("Handle command created text", command.text.key, command.text.contents, command.text.pos);
     }
     else if (command.plot != null) {
       const from_top_left: number[] = [command.plot.pos[0], command.plot.pos[1]];
@@ -984,11 +1239,6 @@ class DARTView {
         maxY,
         command.set_plot_data.ys
       );
-    }
-    else if (command.collapsible_container != null) {
-      this.createCollapsibleContainer(
-        command.collapsible_container.key,
-        command.collapsible_container.location)
     }
     else {
       console.log("Unknown command: ", command);
@@ -1952,104 +2202,252 @@ class DARTView {
   ) => {
     const div: HTMLDivElement = document.createElement("div");
     div.style.position = "absolute";
-    div.style.left = from_top_left[0] + "px";
-    div.style.top = from_top_left[1] + "px";
-    div.style.width = size[0] + "px";
-    div.style.height = size[1] + "px";
+    div.style.left = from_top_left[0] + "%";
+    div.style.top = from_top_left[1] + "%";
+    div.style.width = size[0] + "%";
+    div.style.height = size[1] + "%";
     div.className = "DARTWindow-ui-elem";
     this.uiContainer.appendChild(div);
     return div;
   };
-
   /**
    * This adds a text box to the GUI. This is visible immediately even if you don't call render()
    */
-  createText = (
+  createText = async (
     key: number,
     from_top_left: number[],
     size: number[],
     contents: string,
-    layer: number
+    container_id: number
   ) => {
     this.deleteUIElement(key);
+
+    console.log("Creating text:", key, "for container:", container_id, "contents:", contents);
+
+    // Wait for the BIGE container to exist (with timeout)
+    let bigeContainer: BigeContainer;
+    try {
+      bigeContainer = await this.getCollapsibleContainer(container_id);
+      console.log("Found BIGE container for text:", container_id, bigeContainer);
+    } catch (err) {
+      console.error("Failed to get BIGE container for text:", err);
+      console.error("Text creation failed for key:", key, "container:", container_id);
+      return;
+    }
+
+    // Add text to the BIGE container
+    bigeContainer.addText({
+      id: `text-${key}`,
+      content: contents,
+      className: 'bige-text-element'
+    });
+
+    // Create a text object for the uiElements map (for compatibility)
     let text: Text = {
       type: "text",
-      container: this._createUIElementContainer(key, from_top_left, size),
+      container: bigeContainer.container,
       key,
       from_top_left,
       size,
       contents,
     };
-    text.container.innerHTML = contents;
+    
     this.uiElements.set(key, text);
+    console.log("Successfully created text in BIGE container");
+  };
+
+  // Add method to update text contents
+  setTextContents = (key: number, contents: string) => {
+    if (this.uiElements.has(key)) {
+      const elem = this.uiElements.get(key);
+      if (elem.type === "text") {
+        // Find the BIGE container that contains this text
+        // This assumes the text's container is the BIGE container
+        const possibleBigeContainer = elem.container;
+        
+        // Look through all UI elements to find the BIGE container
+        this.uiElements.forEach((element, elementKey) => {
+          if (element.type === "bige-container" && element.container === possibleBigeContainer) {
+            const bigeContainer = element as BigeContainer;
+            bigeContainer.updateTextContent(`text-${key}`, contents);
+            elem.contents = contents; // Update the local copy too
+          }
+        });
+      }
+    }
   };
 
   /**
    * This adds a dropdown to the GUI. This is visible immediately even if you don't call render()
    */
-  createDropdown = (
+  createDropdown = async (
     key: number,
+    container_id: number,
     options: string[],
-    container_name: string,
-    from_top_left: number[],
+    label: string, 
     onChange?: (key: number, value: string) => void
   ) => {
     this.deleteUIElement(key);
-    let container: HTMLDivElement = this._createUIElementContainer(
-      key,
-      from_top_left,
-      [200, 30]
-    );
-    // Create select element
-    let selectElem = document.createElement("select");
-    selectElem.className = "DARTWindow-dropdown";
-    console.log("options", options);
-    // Add options
-    options.forEach(optionText => {
-      let option = document.createElement("option");
-      option.value = optionText;
-      option.text = optionText;
-      selectElem.appendChild(option);
+
+    console.log("Creating dropdown:", key, "for container:", container_id, "label:", label);
+    console.log("Available containers before lookup:", Array.from(this.uiElements.entries()).map(([k, v]) => [k, v.type]));
+
+    // Wait for the BIGE container to exist (with timeout)
+    let bigeContainer: BigeContainer;
+    try {
+      bigeContainer = await this.getCollapsibleContainer(container_id);
+      console.log("Found BIGE container:", container_id, bigeContainer);
+    } catch (err) {
+      console.error("Failed to get BIGE container for dropdown:", err);
+      console.error("Dropdown creation failed for key:", key, "container:", container_id);
+      return;
+    }
+
+    // Instead of adding to the container directly, use the BIGE container's addDropdown method
+    bigeContainer.addDropdown({
+      id: `dropdown-${key}`,
+      label: label,
+      options: options,
+      defaultValue: options.length > 0 ? options[0] : undefined,
+      gridPosition: 'full',
+      onChange: (value) => {
+        console.log(`Dropdown ${key} changed to: ${value}`);
+        if (onChange) {
+          onChange(key, value);
+        }
+      }
     });
 
-    // Add change handler
-    selectElem.onchange = () => {
-      if (onChange) {
-        onChange(key, selectElem.value);
-      }
-    };
-
-    container.appendChild(selectElem);
-
+    // Create a dummy dropdown object for the uiElements map (for compatibility)
     let dropdown: Dropdown = {
       type: "dropdown",
-      container,
-      selectElem,
       key,
-      from_top_left,
-      size: [200, 30],
-      label: options[0],
-      options: options
+      container: bigeContainer.container,
+      from_top_left: [10, 10],
+      selectElem: null, // The actual select element is managed by BigeContainer
+      label: label,
+      options: options,
+      size: [25, 1000],
     };
+    
     this.uiElements.set(key, dropdown);
+    console.log("Successfully created dropdown in BIGE container");
   };
+
+
+
+  getContainerLastY = (collapsible_container: CollapsibleContainer): number => {
+    let totalHeight = 0;
+    
+    // Get container height to divide offset heigh to compute percentage
+    const containerHeight = collapsible_container.container.offsetHeight;
+    console.log("Container height:", containerHeight);
+
+    // Get all child elements in the container
+    const children = collapsible_container.container.children;
+    
+    // Sum up the heights of all children
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i] as HTMLElement;
+      totalHeight += Math.round((child.offsetHeight/(containerHeight+1)) * 100) +1;
+      console.log("Child:", child, "Height:", Math.round((child.offsetHeight/(containerHeight+1)) * 100));
+    }
+    
+    console.log("Total height of children in percentage:", totalHeight);
+
+    return totalHeight;
+  };
+
+  /**
+   * This gets a BIGE container (formerly collapsible container) by its ID, waiting for it to exist if necessary.
+   * 
+   * @param container_id The ID of the BIGE container to get
+   * @returns A promise that resolves to the BigeContainer instance
+   **/
+  getCollapsibleContainer = (container_id: number): Promise<BigeContainer> => {
+    return new Promise((resolve, reject) => {
+      console.log("Looking for BIGE container with ID:", container_id);
+      console.log("Available uiElements:", Array.from(this.uiElements.keys()));
+      console.log("Available uiElements types:", Array.from(this.uiElements.entries()).map(([k, v]) => [k, v.type]));
+      
+      // Check if the container already exists
+      if (this.uiElements.has(container_id)) {
+        const elem = this.uiElements.get(container_id);
+        console.log("Found existing element:", container_id, "type:", elem.type);
+        
+        if (elem.type === "bige-container") {
+          console.log("Resolving with existing BIGE container:", container_id);
+          resolve(elem as BigeContainer);
+          return;
+        } else {
+          console.warn("Element exists but wrong type:", elem.type, "expected: bige-container");
+        }
+      } else {
+        console.log("Container not found immediately, will wait for it to be created");
+      }
+
+      console.log("Waiting for BIGE container to be created:", container_id);
+      
+      const start = Date.now();
+      const interval = setInterval(() => {
+        if (this.uiElements.has(container_id)) {
+          const elem = this.uiElements.get(container_id);
+          console.log("Checking element:", container_id, "type:", elem.type);
+          
+          if (elem.type === "bige-container") {
+            clearInterval(interval);
+            clearTimeout(timeout);
+            console.log("Found BIGE container after waiting:", container_id);
+            resolve(elem as BigeContainer);
+            return;
+          }
+        }
+        
+        if (Date.now() - start > 3000) {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          console.error("Timeout waiting for BIGE container:", container_id);
+          console.error("Available containers at timeout:", Array.from(this.uiElements.entries()).map(([k, v]) => [k, v.type]));
+          reject(new Error("Timeout waiting for BIGE container: " + container_id));
+        }
+      }, 50);
+
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        console.error("Timeout waiting for BIGE container:", container_id);
+        reject(new Error("Timeout waiting for BIGE container " + container_id));
+      }, 3000);
+    });
+  };
+
 
   createCollapsibleContainer = (
     key: number,
-    from_top_left: number[]
-  ) => {
+    from_top_left: number[] = [10,10],
+    size: number[] = [25, 30],
+    label: string
+  ): BigeContainer => {
+    console.log("Creating BIGE container instead of collapsible container:", key, "label:", label, "size:", size);
+    
+    // Delete any existing UI element at this key
     this.deleteUIElement(key);
+    
+    // Create the container element
     let container: HTMLDivElement = this._createUIElementContainer(
       key,
       from_top_left,
-      [200, 30]
+      size
     );
-    container.className = "DARTWindow-collapsible-container";
-    this.uiContainer.appendChild(container);
-    return container;
-  }
 
-
+    // Create a BIGE container with the actual label as title
+    let bigeContainer = new BigeContainer(container, key, from_top_left, size, label);
+    this.uiElements.set(key, bigeContainer);
+    
+    console.log("Created BIGE container:", key, "at position:", from_top_left, "stored with type:", bigeContainer.type);
+    console.log("uiElements now has:", key, "->", this.uiElements.get(key)?.type);
+    
+    return bigeContainer;
+  };
 
   /**
    * This adds a button to the GUI. This is visible immediately even if you don't call render()
@@ -2262,8 +2660,15 @@ class DARTView {
     if (this.uiElements.has(key)) {
       const elem = this.uiElements.get(key);
       elem.from_top_left = fromTopLeft;
-      elem.container.style.left = fromTopLeft[0] + "px";
-      elem.container.style.top = fromTopLeft[1] + "px";
+      
+      if (elem.type === "bige-container") {
+        // Use BigeContainer's updatePosition method
+        (elem as BigeContainer).updatePosition(fromTopLeft);
+      } else {
+        elem.container.style.left = fromTopLeft[0] + "px";
+        elem.container.style.top = fromTopLeft[1] + "px";
+      }
+      
       if (elem.type === "plot") elem.redraw();
     }
   };
@@ -2275,8 +2680,15 @@ class DARTView {
     if (this.uiElements.has(key)) {
       const elem = this.uiElements.get(key);
       elem.size = size;
-      elem.container.style.width = size[0] + "px";
-      elem.container.style.height = size[1] + "px";
+      
+      if (elem.type === "bige-container") {
+        // Use BigeContainer's updateSize method
+        (elem as BigeContainer).updateSize(size);
+      } else {
+        elem.container.style.width = size[0] + "px";
+        elem.container.style.height = size[1] + "px";
+      }
+      
       if (elem.type === "plot") elem.redraw();
     }
   };

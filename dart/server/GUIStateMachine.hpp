@@ -54,6 +54,10 @@ public:
   /// This formats the latest set of commands as JSON, and clears the buffer
   std::string flushJson();
 
+  /// Updates the global command counter, which is used to synchronize at the frontend
+  int getNextMessageId() { return ++mGlobalCommandCounter; }
+
+
   /// This is a high-level command that creates/updates all the shapes in a
   /// world by calling the lower-level commands
   void renderWorld(
@@ -463,13 +467,17 @@ public:
 
 
   /// This creates a collapsible container with the given name
-  void createCollapsibleContainer(const std::string& containerName, Eigen::Vector2i location);
+  void createCollapsibleContainer(const std::string& label, Eigen::Vector2i pos, Eigen::Vector2i size);
   /// This registers a listener that will get called when the dropdown value changes
-  void createDropDown(const std::string& dropdownKey, const std::vector<std::string>& options, const std::string& containerName, Eigen::Vector2i location, std::function<void(const std::string&)> onChange);
+  void createDropDown(const std::string& label, const std::vector<std::string>& options, const std::string& layer,  std::function<void(const std::string&)> onChange);
 
 
 
 protected:
+
+  // Global counter for synchornizing the GUIStateMachine with the web GUI.
+  int mGlobalCommandCounter = 0;
+
   // protects the buffered JSON message (mJson) from getting
   // corrupted if we queue messages while trying to flush()
   std::recursive_mutex globalMutex;
@@ -701,15 +709,15 @@ protected:
   {
     std::string key;
     std::vector<std::string> options;
-    std::string containerName;
-    Eigen::Vector2i location;
+    std::string layer;
     std::function<void(const std::string&)> onChange;
   };
   std::unordered_map<std::string, DropDown> mDropDowns;
   struct CollapsibleContainer
   {
     std::string key;
-    Eigen::Vector2i location;
+    Eigen::Vector2i pos;
+    Eigen::Vector2i size;
   };
   std::unordered_map<std::string, CollapsibleContainer> mCollapsibleContainers;
 
@@ -749,6 +757,9 @@ protected:
   void encodeDropDown(
     proto::CommandList& list,
     const DropDown& dropDown); 
+
+
+  bool uiKeyExists(const std::string& key) const;
 
 }; // class GUIStateMachine
 

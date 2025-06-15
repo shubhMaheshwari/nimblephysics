@@ -2,7 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "dist/"
+    "declarationDir": "dist/",
+    "target": "es2017", // or "es2018", "es2020", etc.
+    "lib": ["es2017", "dom"]
   },
   "files": [
     "src/types.d.ts",

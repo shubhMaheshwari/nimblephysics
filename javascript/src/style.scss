@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;700&display=swap");
 
+@import 'src/components/bige-container';
+
+
 .NimbleStandalone-container {
   position: relative;
   width: 100%;
@@ -330,13 +333,60 @@ $triangle-size: 5px;
         background-color: rgba(125, 125, 125, 0.5);
       }
 
+ 
+
+
       canvas {
         outline: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         /* mobile webkit */
       }
+
     }
   }
+
+  .collapsible-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    z-index: 100;
+    pointer-events: all;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  
+    &.collapsed {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  
+    .collapsible-header {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+  
+    .collapsible-body {
+      margin-top: 8px;
+    }
+  
+    select.input-field {
+      margin-top: 10px;
+      width: 100%;
+    }
+  
+    .DARTWindow-ui-text {
+      align: center;
+      text-align: center;
+      font-family: "Times New Roman", serif;
+      font-size: 100%;
+    }
+  }
+
+
 
   .GUI_not_connected {
     position: absolute;
@@ -450,4 +500,26 @@ $triangle-size: 5px;
     border: 1px solid #cfcfcf;
     margin: 9px;
   }
+}
+
+
+// Add to your SCSS file
+.text-elements-container {
+  margin-bottom: 16px;
+}
+
+.text-element {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.4;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.bige-text-element {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  border-left: 3px solid #3b82f6;
 }

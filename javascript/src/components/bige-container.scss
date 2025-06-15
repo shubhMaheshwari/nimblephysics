@@ -1,0 +1,450 @@
+.bige-container {
+  /* Remove fixed positioning and width - these will be set by JavaScript */
+  /* position: fixed; */
+  /* left: 10%; */
+  /* top: 10%; */
+  /* width: 320px; */
+  
+  /* Keep styling properties but allow dynamic sizing */
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  backdrop-filter: blur(16px);
+  
+  /* CRITICAL: Remove overflow: hidden to allow resizing */
+  /* overflow: hidden; */
+  
+  position: relative;
+  
+  /* Add responsive behavior */
+  min-width: 200px;
+  min-height: 100px;
+  max-width: 100vw;
+  max-height: 100vh;
+  box-sizing: border-box;
+  
+  /* IMPORTANT: Use flexbox but allow height to be controlled externally */
+  display: flex;
+  flex-direction: column;
+  
+  /* Remove automatic height - let JavaScript control it */
+  /* height: auto; */
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%, rgba(147, 51, 234, 0.05) 100%);
+    pointer-events: none;
+    border-radius: 16px; /* Match parent border radius */
+  }
+
+  .header {
+    background: linear-gradient(90deg, #2563eb 0%, #9333ea 100%);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent header from shrinking */
+    border-radius: 16px 16px 0 0; /* Round top corners */
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .header-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    flex-shrink: 0; /* Prevent icon from shrinking */
+  }
+
+  .header-text {
+    flex: 1; /* Allow text to grow and shrink */
+    min-width: 0; /* Allow text to shrink below content size */
+    
+    h1 {
+      font-size: clamp(16px, 4vw, 20px); /* Responsive font size */
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+      color: rgba(191, 219, 254, 0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .toggle-icon {
+    flex-shrink: 0; /* Prevent toggle icon from shrinking */
+    transition: transform 0.3s ease;
+    
+    &.rotated {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .content {
+    padding: clamp(12px, 3vw, 24px); /* Responsive padding */
+    
+    /* CRITICAL: Remove flex: 1 and let content size naturally */
+    /* flex: 1; */
+    
+    /* Allow content to scroll if needed but don't force height */
+    overflow-y: auto;
+    
+    /* Remove min-height constraint */
+    /* min-height: 0; */
+    
+    /* Transition for collapse animation */
+    transition: all 0.3s ease;
+    opacity: 1;
+    max-height: none;
+    
+    /* Add border radius for bottom */
+    border-radius: 0 0 16px 16px;
+  }
+
+
+  .select-label {
+    display: block;
+    font-size: clamp(10px, 2.5vw, 12px); /* Responsive font size */
+    font-weight: 600;
+    color: rgba(148, 163, 184, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .select-wrapper {
+    position: relative;
+
+    &:hover .select-icon {
+      color: white;
+    }
+  }
+
+  .custom-select {
+    width: 100%;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 12px;
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px); /* Responsive padding */
+    color: white;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+
+    &:hover {
+      background: rgba(51, 65, 85, 0.5);
+      border-color: rgba(148, 163, 184, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    option {
+      background: #1e293b;
+      color: white;
+    }
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgba(148, 163, 184, 0.6);
+    transition: color 0.2s ease;
+  }
+
+  .status-display {
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 12px;
+    padding: clamp(12px, 3vw, 16px); /* Responsive padding */
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 20px;
+  }
+
+  .status-label {
+    font-size: clamp(10px, 2.5vw, 12px); /* Responsive font size */
+    font-weight: 600;
+    color: rgba(148, 163, 184, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .status-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .status-tag {
+    padding: 4px 12px;
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border-radius: 20px;
+    font-size: clamp(10px, 2.5vw, 12px); /* Responsive font size */
+    font-weight: 500;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    padding-top: 8px;
+    flex-wrap: wrap; /* Allow wrapping on small containers */
+  }
+
+  .analyze-btn {
+    flex: 1;
+    min-width: 120px; /* Minimum button width */
+    background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    font-weight: 600;
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px); /* Responsive padding */
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.25);
+    font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(90deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 8px 25px 0 rgba(59, 130, 246, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: linear-gradient(90deg, #475569 0%, #374151 100%);
+      cursor: not-allowed;
+    }
+  }
+
+  .settings-btn {
+    background: rgba(51, 65, 85, 0.5);
+    color: rgba(148, 163, 184, 0.8);
+    padding: clamp(8px, 2vw, 12px); /* Responsive padding */
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent settings button from shrinking */
+
+    &:hover {
+      background: rgba(71, 85, 105, 0.5);
+      color: white;
+    }
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* Text elements styling */
+  .text-elements-container {
+    margin-bottom: 16px;
+  }
+
+  .text-element {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
+    padding: clamp(8px, 2vw, 12px); /* Responsive padding */
+    margin-bottom: 8px;
+    color: rgba(226, 232, 240, 0.9);
+    font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Collapsible functionality */
+  &.collapsed {
+    .content {
+      display: none;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+    }
+    
+    .header {
+      cursor: pointer;
+      border-radius: 16px; /* Round all corners when collapsed */
+    }
+    
+    /* IMPORTANT: When collapsed, allow height to shrink */
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  /* Responsive behavior for very small containers */
+  &[style*="width: 1"] .header-text h1,
+  &[style*="width: 2"] .header-text h1 {
+    font-size: 14px;
+  }
+
+  &[style*="width: 1"] .header-text p,
+  &[style*="width: 2"] .header-text p {
+    font-size: 11px;
+  }
+}
+
+// Resize handles remain the same but with better visibility
+.resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+  
+  // Make handles slightly larger for better usability
+  &:hover {
+    background: rgba(59, 130, 246, 0.4);
+  }
+}
+
+
+.resize-se {
+  bottom: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  cursor: se-resize;
+}
+
+.resize-s {
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 8px;
+  cursor: s-resize;
+}
+
+.resize-e {
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 30px;
+  cursor: e-resize;
+}
+
+.resize-sw {
+  bottom: -3px;
+  left: -3px;
+  width: 12px;
+  height: 12px;
+  cursor: sw-resize;
+}
+
+.resize-w {
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 30px;
+  cursor: w-resize;
+}
+
+.resize-nw {
+  top: -3px;
+  left: -3px;
+  width: 12px;
+  height: 12px;
+  cursor: nw-resize;
+}
+
+.resize-n {
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 8px;
+  cursor: n-resize;
+}
+
+.resize-ne {
+  top: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  cursor: ne-resize;
+}
+
+/* Make resize handles more visible and easier to grab */
+.bige-container:hover .resize-handle {
+  background: rgba(59, 130, 246, 0.2);
+  
+  &:hover {
+    background: rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* Add a subtle border to make handles more visible */
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.bige-container:hover .resize-handle::after {
+  opacity: 1;
+}

@@ -467,7 +467,7 @@ class NimbleStandalone {
       method: 'get',
       signal: abortSignal
     }).then((response) => {
-      console.log(response);
+      console.log("movement bin", response);
       if (response != null && response.body != null && response.ok) {
         let body = response.body;
         if (url.endsWith('gz')) {
@@ -696,6 +696,7 @@ class NimbleStandalone {
       this.setProgress(frameNumber / this.estimatedTotalFrames);
       if (this.view != null) {
         if (frameNumber < this.rawFrameBytes.length) {
+          // console.log("Setting frame " + frameNumber, this.getRecordingFrame(frameNumber));
           this.getRecordingFrame(frameNumber).command.forEach(this.handleCommand);
         }
         else {

@@ -142,6 +142,9 @@ std::string GUIStateMachine::flushJson()
 {
   const std::lock_guard<std::recursive_mutex> lock(mProtoMutex);
 
+  // Set the message ID before serializing
+  mCommandList.set_message_id(this->getNextMessageId());
+
   mCommandListOutputBuffer.clear();
   mCommandList.SerializeToString(&mCommandListOutputBuffer);
 
@@ -1692,6 +1695,10 @@ void GUIStateMachine::createText(
     const Eigen::Vector2i& size,
     const std::string& layer)
 {
+
+  if (uiKeyExists(key))
+    throw std::runtime_error("Duplicate UI key: '" + key + "' already exists as a UI element.");
+
   const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
 
   Text text;
@@ -2155,13 +2162,14 @@ void GUIStateMachine::deleteUIElement(const std::string& key)
 
 
 /// This creates a collapsible container with the given name
-void GUIStateMachine::createCollapsibleContainer(const std::string& containerName, Eigen::Vector2i location){
+void GUIStateMachine::createCollapsibleContainer(const std::string& label, Eigen::Vector2i pos, Eigen::Vector2i size){
   const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
   CollapsibleContainer container;
-  container.key = containerName;
-  container.location = location;
+  container.key = label;
+  container.pos = pos;
+  container.size = size;
 
-  mCollapsibleContainers[containerName] = container;
+  mCollapsibleContainers[label] = container;
 
   queueCommand([&](proto::CommandList& list) {
     encodeCollapsibleContainer(list, container);
@@ -2169,15 +2177,14 @@ void GUIStateMachine::createCollapsibleContainer(const std::string& containerNam
 }
 
 /// This registers a listener that will get called when the dropdown value changes
-void GUIStateMachine::createDropDown(const std::string& dropdownKey, const std::vector<std::string>& options, const std::string& containerName, Eigen::Vector2i location,  std::function<void(const std::string&)> onChange){
+void GUIStateMachine::createDropDown(const std::string& label, const std::vector<std::string>& options, const std::string& layer,  std::function<void(const std::string&)> onChange){
   const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
   DropDown dropdown; 
-  dropdown.key = dropdownKey;
+  dropdown.key = label;
   dropdown.options = options;
-  dropdown.containerName = containerName;
-  dropdown.location = location;
+  dropdown.layer = layer;
   dropdown.onChange = onChange;
-  mDropDowns[dropdownKey] = dropdown;
+  mDropDowns[label] = dropdown;
 
   queueCommand([&](proto::CommandList& list) {
     encodeDropDown(list, dropdown);
@@ -2608,8 +2615,11 @@ void GUIStateMachine::encodeCollapsibleContainer(
 {
   proto::Command* command = list.add_command();
   command->mutable_collapsible_container()->set_key(getStringCode(container.key));
-  command->mutable_collapsible_container()->add_location(container.location(0));
-  command->mutable_collapsible_container()->add_location(container.location(1));
+  command->mutable_collapsible_container()->add_pos(container.pos(0));
+  command->mutable_collapsible_container()->add_pos(container.pos(1));
+  command->mutable_collapsible_container()->add_pos(container.size(0));
+  command->mutable_collapsible_container()->add_pos(container.size(1));
+  command->mutable_collapsible_container()->set_label(container.key);
 }
 
 void GUIStateMachine::encodeDropDown(
@@ -2617,14 +2627,30 @@ void GUIStateMachine::encodeDropDown(
 {
   proto::Command* command = list.add_command();
   command->mutable_dropdown()->set_key(getStringCode(dropdown.key));
-  command->mutable_dropdown()->add_location(dropdown.location(0)); 
-  command->mutable_dropdown()->add_location(dropdown.location(1)); 
-  command->mutable_dropdown()->set_container_name(dropdown.containerName);
+  command->mutable_dropdown()->set_layer(getStringCode(dropdown.layer));
+
+  // Todo assert checks whether the container exists
   for (const auto& option : dropdown.options)
   {
     command->mutable_dropdown()->add_options(option);
   }
+  command->mutable_dropdown()->set_label(dropdown.key);
+
 }
+
+
+bool GUIStateMachine::uiKeyExists(const std::string& key) const
+{
+  return mCollapsibleContainers.count(key) ||
+         mDropDowns.count(key) ||
+         mText.count(key) ||
+         mButtons.count(key) ||
+         mSliders.count(key) ||
+         mPlots.count(key) ||
+         mRichPlots.count(key);
+}
+
+
 
 
 

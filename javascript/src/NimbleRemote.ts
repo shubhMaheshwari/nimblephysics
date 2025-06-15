@@ -124,9 +124,9 @@ class DARTRemote {
       console.log("Creating dropdown: ", command.dropdown);
       this.view.createDropdown(
         command.dropdown.key,
+        command.dropdown.layer,
         command.dropdown.options,
-        command.dropdown.container_name,
-        command.dropdown.location,
+        command.dropdown.label,
         (key: number, value: string) => {
           const message = JSON.stringify({
             type: "dropdown_change",

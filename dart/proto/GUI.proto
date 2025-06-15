@@ -4,6 +4,7 @@ package dart.proto;
 
 message CommandList {
   repeated Command command = 1;
+  int32 message_id = 2;
 }
 
 message Command {
@@ -49,7 +50,7 @@ message Command {
     SetPlotData set_plot_data = 28;
     Dropdown dropdown = 40;
     CollapsibleContainer collapsible_container = 41;
-
+    GetStringCode get_string_code = 42;
   }
 }
 
@@ -249,6 +250,22 @@ message CreateRichPlot {
   string y_axis_label = 7;
 }
 
+
+message Dropdown {
+  int32 key = 1;
+  int32 layer = 2;
+  repeated string options = 3;
+  string label = 4;  
+}
+
+
+message CollapsibleContainer {
+  int32 key = 1;
+  repeated int32 pos = 3; // [x, y]
+  string label = 4;
+}
+
+
 message SetRichPlotData {
   int32 key = 1;
   string name = 2;
@@ -317,15 +334,14 @@ message SetPlotData {
   repeated float ys = 6;
 }
 
-message Dropdown {
-  int32 key = 1;
-  repeated string options = 3;
-  string container_name = 4;
-  repeated int32 location = 2; // [x, y]
-}
-
-
-message CollapsibleContainer {
-  int32 key = 1;
-  repeated int32 location = 2; // [x, y]
+// At the end of your proto:
+message GetStringCode {
+  oneof query {
+    string key = 1;   // Request: get code for string
+    int32 code = 2;   // Request: get string for code
+  }
+  oneof result {
+    int32 code_result = 3;   // Response: code for string
+    string key_result = 4;   // Response: string for code
+  }
 }

@@ -72,38 +72,41 @@ That will install the dependencies you need, and then build and install the Pyth
 4. Copy binding to location where nimblephysics is installed, see `setup.py` and `generate_pyi_stubs.sh`
 
 	```
-	cp <nimblephysics-dir>/build/python/_nimblephysics/_nimblephysics.so /<python-env>/lib/python3.8/site-packages/nimblephysics_libs // Copy .so python binding file. 
 	cd build/python/_nimblephysics
 	PYTHONPATH=:$PWD pybind11-stubgen --no-setup-py -o stubs _nimblephysics 
 	touch stubs/_nimblephysics-stubs/py.typed
 	mv stubs/_nimblephysics-stubs/__init__.pyi stubs/_nimblephysics-stubs/_nimblephysics.pyi
 	find stubs/_nimblephysics-stubs -type f | xargs sed -i 's/_nimblephysics/nimblephysics_libs\._nimblephysics/g'
+	NIMBLEPATH=$(python -c "import nimblephysics_libs; print(nimblephysics_libs.__path__[0])" 2>/dev/null) 
+	echo "nimblephysics_libs package location:$NIMBLEPATH"; 
+	// Copy .so python binding file
+	cp _nimblephysics.so $NIMBLEPATH 
 	```
 
-### To create new python-javascript workflow 
+### Create new python-javascript workflow 
 
 NimblePhysics works by creating python binding to make python work with C++ / dart. The it uses probobufs to interact with the frontend. To create a new workflow
 
-1. Update `data/proto/GUI.proto`
+1. Update `python/_nimblephysics/server/GUIStateMachine.cpp` with new functions that are accessible to python 
+
+2. Update `dart/proto/GUI.proto`
 	- Add new element in Command, last was collapse container = 40
 	- Add message to share the element
 	- run cmake command again compile the cpp files in dart/proto using the updated .proto files  
 
-2. Update `GUIStateMachine.hpp`
+3. Update `GUIStateMachine.hpp`
 	- Create struct for new frontend element. 
 	- Create new map/list to store the struct
 	- Declare createNewElement, encodeNewElement functions 
 
-3. Update `GUIStateMachine.cpp`
+4. Update `GUIStateMachine.cpp`
 	- Define createNewElement, encodeNewElement functions
 	- Update getCurrentStateAsJson
 
-4. Update `python/_nimblephysics/server/GUIWebsocketServer.cpp` with new functions that are accessible to python 
-
-
 5. Update javascript
 	- Add new else if conditions in `HandleCommand` function of `NimbleView.ts` or `NimbleRemvote.ts` for normal or interactive HTML elements respectively. 
-	- compile 
+	- Update the proto files for ts by running `protoc --proto_path=../dart/proto --ts_out=src/proto ../dart/proto/GUI.proto`
+	- Update allowed types in map variable `uiElements` in `DartView` 
 
 6. If interactive element send 
 	- Update mServer->message in `GUIWebSocketServer::serve`
@@ -117,3 +120,12 @@ NimblePhysics works by creating python binding to make python work with C++ / da
 
 2. python binding could not find symbol _ZdasdaRootVeclocity
 	- Replaced  `constexpr` with `const` for `Joint::ActuatorType Joint::VELOCITY` in `dart/dynamics/Joint.{hpp,cpp}`
+
+
+3. Adding Collapse container and DropDown on frontend using the **Create new python-javascript workflow**  
+
+### Make a draggable-collapsable container to show subject data. 
+	- TODO 
+		- Tasks: Remove old Collaspible Container class
+		- Current container height resize is not working 
+		- There is a way to add multiple elements in horizaontal fashio. like to texts or dropdowns in the same row. Find a way to do that to make container more compact.	
