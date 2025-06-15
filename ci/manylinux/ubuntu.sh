@@ -23,7 +23,7 @@ fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig/
 
 # Install LAPACK
-apt-get install libblas-dev liblapack-dev libboost-all-dev
+apt-get install -y libblas-dev liblapack-dev libboost-all-dev curl
 
 # Install Eigen
 curl https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz > eigen.tar.gz
@@ -49,7 +49,7 @@ popd
 rm -rf libccd
 
 # Install ASSIMP (latest version of assimp has issue passing ply files) use 5.0.0
-git clone --branch v5.0.0 https://github.com/assimp/assimp.git                                                                                                                                
+git clone --branch v5.0.0 https://github.com/assimp/assimp.git
 pushd assimp
 mkdir build
 pushd build

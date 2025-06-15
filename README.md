@@ -112,6 +112,12 @@ NimblePhysics works by creating python binding to make python work with C++ / da
 	- Update mServer->message in `GUIWebSocketServer::serve`
 
 
+### Build Library 
+1. Run npm build-for-python
+2. Update DockerImage in BIGE
+
+
+
 ### Change logs: 
 1. (assimp version should be <= 5.0.0)
 	- Warning [MeshShape.cpp:493] [MeshShape::loadMesh] Failed loading mesh 'Geometry/little_proximal_lvs.ply' with ASSIMP error 'basic_string::erase: __pos (which is 18446744073709551615) > this->size() (which is 34)'.
