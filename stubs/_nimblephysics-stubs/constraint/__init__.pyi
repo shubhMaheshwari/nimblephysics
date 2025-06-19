@@ -1,10 +1,10 @@
-from __future__ import annotations
 import nimblephysics_libs._nimblephysics.constraint
 import typing
 import nimblephysics_libs._nimblephysics.collision
 import nimblephysics_libs._nimblephysics.dynamics
 import nimblephysics_libs._nimblephysics.math
 import numpy
+import numpy.typing
 _Shape = typing.Tuple[int, ...]
 
 __all__ = [
@@ -47,22 +47,22 @@ class ConstraintBase():
 class ConstraintSolver():
     def addConstraint(self, constraint: ConstraintBase) -> None: ...
     def addSkeleton(self, skeleton: nimblephysics_libs._nimblephysics.dynamics.Skeleton) -> None: ...
-    def addSkeletons(self, skeletons: typing.List[nimblephysics_libs._nimblephysics.dynamics.Skeleton]) -> None: ...
-    def applyConstraintImpulses(self, arg0: typing.List[ConstraintBase], arg1: typing.List[float]) -> None: ...
+    def addSkeletons(self, skeletons: list[nimblephysics_libs._nimblephysics.dynamics.Skeleton]) -> None: ...
+    def applyConstraintImpulses(self, arg0: list[ConstraintBase], arg1: list[float]) -> None: ...
     def buildConstrainedGroups(self) -> None: ...
     def clearLastCollisionResult(self) -> None: ...
     def enforceContactAndJointAndCustomConstraintsWithLcp(self) -> None: ...
     def getCollisionDetector(self) -> nimblephysics_libs._nimblephysics.collision.CollisionDetector: ...
     def getCollisionGroup(self) -> nimblephysics_libs._nimblephysics.collision.CollisionGroup: ...
-    def getConstrainedGroups(self) -> typing.List[ConstrainedGroup]: ...
-    def getConstraints(self) -> typing.List[ConstraintBase]: ...
+    def getConstrainedGroups(self) -> list[ConstrainedGroup]: ...
+    def getConstraints(self) -> list[ConstraintBase]: ...
     def getGradientEnabled(self) -> bool: ...
     def getTimeStep(self) -> float: ...
     def removeAllConstraints(self) -> None: ...
     def removeAllSkeletons(self) -> None: ...
     def removeConstraint(self, constraint: ConstraintBase) -> None: ...
     def removeSkeleton(self, skeleton: nimblephysics_libs._nimblephysics.dynamics.Skeleton) -> None: ...
-    def removeSkeletons(self, skeletons: typing.List[nimblephysics_libs._nimblephysics.dynamics.Skeleton]) -> None: ...
+    def removeSkeletons(self, skeletons: list[nimblephysics_libs._nimblephysics.dynamics.Skeleton]) -> None: ...
     def replaceEnforceContactAndJointAndCustomConstraintsFn(self, arg0: typing.Callable[[], None]) -> None: ...
     def setCollisionDetector(self, collisionDetector: nimblephysics_libs._nimblephysics.collision.CollisionDetector) -> None: ...
     def setContactClippingDepth(self, arg0: float) -> None: ...
@@ -112,7 +112,7 @@ class BoxedLcpConstraintSolver(ConstraintSolver):
     def getSecondaryBoxedLcpSolver(self) -> BoxedLcpSolver: ...
     def makeHyperAccurateAndVerySlow(self) -> None: ...
     def setBoxedLcpSolver(self, lcpSolver: BoxedLcpSolver) -> None: ...
-    def solveLcp(self, arg0: LcpInputs, arg1: ConstrainedGroup) -> typing.List[float]: ...
+    def solveLcp(self, arg0: LcpInputs, arg1: ConstrainedGroup) -> list[float]: ...
     pass
 class DantzigBoxedLcpSolver(BoxedLcpSolver):
     @staticmethod
@@ -122,9 +122,9 @@ class DantzigBoxedLcpSolver(BoxedLcpSolver):
     pass
 class BallJointConstraint(JointConstraint, ConstraintBase):
     @typing.overload
-    def __init__(self, body: nimblephysics_libs._nimblephysics.dynamics.BodyNode, jointPos: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None: ...
+    def __init__(self, body1: nimblephysics_libs._nimblephysics.dynamics.BodyNode, body2: nimblephysics_libs._nimblephysics.dynamics.BodyNode, jointPos: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None: ...
     @typing.overload
-    def __init__(self, body1: nimblephysics_libs._nimblephysics.dynamics.BodyNode, body2: nimblephysics_libs._nimblephysics.dynamics.BodyNode, jointPos: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None: ...
+    def __init__(self, body: nimblephysics_libs._nimblephysics.dynamics.BodyNode, jointPos: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None: ...
     pass
 class JointCoulombFrictionConstraint(ConstraintBase):
     def __init__(self, joint: nimblephysics_libs._nimblephysics.dynamics.Joint) -> None: ...
@@ -154,68 +154,68 @@ class JointLimitConstraint(ConstraintBase):
     pass
 class LcpInputs():
     @property
-    def mA(self) -> numpy.ndarray[numpy.float64, _Shape[m, n]]:
+    def mA(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, n]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, n]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, n]"]
         """
     @mA.setter
-    def mA(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, n]]) -> None:
+    def mA(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, n]"]) -> None:
         pass
     @property
-    def mB(self) -> numpy.ndarray[numpy.float64, _Shape[m, 1]]:
+    def mB(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]
         """
     @mB.setter
-    def mB(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, 1]]) -> None:
+    def mB(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, 1]"]) -> None:
         pass
     @property
-    def mFIndex(self) -> numpy.ndarray[numpy.int32, _Shape[m, 1]]:
+    def mFIndex(self) -> typing.Annotated[numpy.typing.NDArray[numpy.int32], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.int32, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.int32], "[m, 1]"]
         """
     @mFIndex.setter
-    def mFIndex(self, arg0: numpy.ndarray[numpy.int32, _Shape[m, 1]]) -> None:
+    def mFIndex(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.int32, "[m, 1]"]) -> None:
         pass
     @property
-    def mHi(self) -> numpy.ndarray[numpy.float64, _Shape[m, 1]]:
+    def mHi(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]
         """
     @mHi.setter
-    def mHi(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, 1]]) -> None:
+    def mHi(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, 1]"]) -> None:
         pass
     @property
-    def mLo(self) -> numpy.ndarray[numpy.float64, _Shape[m, 1]]:
+    def mLo(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]
         """
     @mLo.setter
-    def mLo(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, 1]]) -> None:
+    def mLo(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, 1]"]) -> None:
         pass
     @property
-    def mOffset(self) -> numpy.ndarray[numpy.int32, _Shape[m, 1]]:
+    def mOffset(self) -> typing.Annotated[numpy.typing.NDArray[numpy.int32], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.int32, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.int32], "[m, 1]"]
         """
     @mOffset.setter
-    def mOffset(self, arg0: numpy.ndarray[numpy.int32, _Shape[m, 1]]) -> None:
+    def mOffset(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.int32, "[m, 1]"]) -> None:
         pass
     @property
-    def mW(self) -> numpy.ndarray[numpy.float64, _Shape[m, 1]]:
+    def mW(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]
         """
     @mW.setter
-    def mW(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, 1]]) -> None:
+    def mW(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, 1]"]) -> None:
         pass
     @property
-    def mX(self) -> numpy.ndarray[numpy.float64, _Shape[m, 1]]:
+    def mX(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[m, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[m, 1]"]
         """
     @mX.setter
-    def mX(self, arg0: numpy.ndarray[numpy.float64, _Shape[m, 1]]) -> None:
+    def mX(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[m, 1]"]) -> None:
         pass
     pass
 class PgsBoxedLcpSolver(BoxedLcpSolver):
@@ -282,8 +282,8 @@ class PgsBoxedLcpSolverOption():
     pass
 class WeldJointConstraint(JointConstraint, ConstraintBase):
     @typing.overload
-    def __init__(self, body: nimblephysics_libs._nimblephysics.dynamics.BodyNode) -> None: ...
-    @typing.overload
     def __init__(self, body1: nimblephysics_libs._nimblephysics.dynamics.BodyNode, body2: nimblephysics_libs._nimblephysics.dynamics.BodyNode) -> None: ...
+    @typing.overload
+    def __init__(self, body: nimblephysics_libs._nimblephysics.dynamics.BodyNode) -> None: ...
     def setRelativeTransform(self, tf: nimblephysics_libs._nimblephysics.math.Isometry3) -> None: ...
     pass

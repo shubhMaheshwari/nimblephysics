@@ -1,4 +1,3 @@
-from __future__ import annotations
 import nimblephysics_libs._nimblephysics.utils.StringUtils
 import typing
 

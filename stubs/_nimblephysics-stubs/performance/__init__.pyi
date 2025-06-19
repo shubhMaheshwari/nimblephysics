@@ -1,5 +1,4 @@
 """This provides performance measurement utilities, to aid performance optimization work."""
-from __future__ import annotations
 import nimblephysics_libs._nimblephysics.performance
 import typing
 
@@ -14,5 +13,5 @@ class FinalizedPerformanceLog():
     def toJson(self) -> str: ...
     pass
 class PerformanceLog():
-    def finalize(self) -> typing.Dict[str, FinalizedPerformanceLog]: ...
+    def finalize(self) -> dict[str, FinalizedPerformanceLog]: ...
     pass
