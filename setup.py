@@ -99,8 +99,7 @@ class CMakeBuild(build_ext):
                 env_copy['PYTHONPATH'] = f":{os.getcwd()}"
                 
                 subprocess.check_call([
-                    sys.executable, '-m', 'pybind11_stubgen', 
-                    '--no-setup-py', '-o', 'stubs', '_nimblephysics'
+                    sys.executable, '-m', 'pybind11_stubgen', '-o', 'stubs', '_nimblephysics'
                 ], env=env_copy)
                 
                 # Process stubs

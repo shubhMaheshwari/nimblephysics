@@ -211,7 +211,7 @@ popd
 rm -rf PerfUtils
 
 # Install Protobuf
-PROTOBUF_VERSION="3.14.0"
+PROTOBUF_VERSION="3.20.3"
 wget https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-all-${PROTOBUF_VERSION}.tar.gz
 tar -xvzf protobuf-all-${PROTOBUF_VERSION}.tar.gz
 rm protobuf-all-${PROTOBUF_VERSION}.tar.gz
@@ -224,7 +224,7 @@ popd
 rm -rf protobuf-${PROTOBUF_VERSION}
 
 # Install GRPC
-git clone --recurse-submodules -b v1.35.0 https://github.com/grpc/grpc
+git clone --recurse-submodules -b v1.46.0 https://github.com/grpc/grpc
 pushd grpc
 mkdir -p cmake/build
 pushd cmake/build
