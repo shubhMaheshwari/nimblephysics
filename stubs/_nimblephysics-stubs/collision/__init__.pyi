@@ -1,8 +1,8 @@
-from __future__ import annotations
 import nimblephysics_libs._nimblephysics.collision
 import typing
 import nimblephysics_libs._nimblephysics.dynamics
 import numpy
+import numpy.typing
 _Shape = typing.Tuple[int, ...]
 
 __all__ = [
@@ -32,7 +32,7 @@ class CollisionFilter():
     pass
 class CollisionGroup():
     def addShapeFrame(self, shapeFrame: nimblephysics_libs._nimblephysics.dynamics.ShapeFrame) -> None: ...
-    def addShapeFrames(self, shapeFrames: typing.List[nimblephysics_libs._nimblephysics.dynamics.ShapeFrame]) -> None: ...
+    def addShapeFrames(self, shapeFrames: list[nimblephysics_libs._nimblephysics.dynamics.ShapeFrame]) -> None: ...
     def addShapeFramesOf(self) -> None: ...
     @typing.overload
     def collide(self) -> bool: ...
@@ -50,15 +50,15 @@ class CollisionGroup():
     def getNumShapeFrames(self) -> int: ...
     def hasShapeFrame(self, shapeFrame: nimblephysics_libs._nimblephysics.dynamics.ShapeFrame) -> bool: ...
     @typing.overload
-    def raycast(self, from_point: numpy.ndarray[numpy.float64, _Shape[3, 1]], to_point: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> bool: ...
+    def raycast(self, from_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"], to_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> bool: ...
     @typing.overload
-    def raycast(self, from_point: numpy.ndarray[numpy.float64, _Shape[3, 1]], to_point: numpy.ndarray[numpy.float64, _Shape[3, 1]], option: RaycastOption) -> bool: ...
+    def raycast(self, from_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"], to_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"], option: RaycastOption) -> bool: ...
     @typing.overload
-    def raycast(self, from_point: numpy.ndarray[numpy.float64, _Shape[3, 1]], to_point: numpy.ndarray[numpy.float64, _Shape[3, 1]], option: RaycastOption, result: RaycastResult) -> bool: ...
+    def raycast(self, from_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"], to_point: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"], option: RaycastOption, result: RaycastResult) -> bool: ...
     def removeAllShapeFrames(self) -> None: ...
     def removeDeletedShapeFrames(self) -> None: ...
     def removeShapeFrame(self, shapeFrame: nimblephysics_libs._nimblephysics.dynamics.ShapeFrame) -> None: ...
-    def removeShapeFrames(self, shapeFrames: typing.List[nimblephysics_libs._nimblephysics.dynamics.ShapeFrame]) -> None: ...
+    def removeShapeFrames(self, shapeFrames: list[nimblephysics_libs._nimblephysics.dynamics.ShapeFrame]) -> None: ...
     def removeShapeFramesOf(self) -> None: ...
     @typing.overload
     def setAutomaticUpdate(self) -> None: ...
@@ -108,7 +108,7 @@ class CollisionResult():
     def __init__(self) -> None: ...
     def clear(self) -> None: ...
     def getContact(self, arg0: int) -> Contact: ...
-    def getContacts(self) -> typing.List[Contact]: ...
+    def getContacts(self) -> list[Contact]: ...
     def getNumContacts(self) -> int: ...
     @typing.overload
     def inCollision(self, bn: nimblephysics_libs._nimblephysics.dynamics.BodyNode) -> bool: ...
@@ -123,9 +123,9 @@ class Contact():
     @staticmethod
     def getNormalEpsilonSquared() -> float: ...
     @staticmethod
-    def isNonZeroNormal(normal: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> bool: ...
+    def isNonZeroNormal(normal: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> bool: ...
     @staticmethod
-    def isZeroNormal(normal: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> bool: ...
+    def isZeroNormal(normal: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> bool: ...
     @property
     def collisionObject1(self) -> CollisionObject:
         """
@@ -143,12 +143,12 @@ class Contact():
     def collisionObject2(self, arg0: CollisionObject) -> None:
         pass
     @property
-    def force(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def force(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @force.setter
-    def force(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def force(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
     def isFrictionOn(self) -> bool:
@@ -183,12 +183,12 @@ class Contact():
     def lcpResultTangent2(self, arg0: float) -> None:
         pass
     @property
-    def normal(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def normal(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @normal.setter
-    def normal(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def normal(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
     def penetrationDepth(self) -> float:
@@ -199,44 +199,44 @@ class Contact():
     def penetrationDepth(self, arg0: float) -> None:
         pass
     @property
-    def point(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def point(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @point.setter
-    def point(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def point(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
-    def spatialNormalA(self) -> numpy.ndarray[numpy.float64, _Shape[6, n]]:
+    def spatialNormalA(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[6, n]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[6, n]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[6, n]"]
         """
     @spatialNormalA.setter
-    def spatialNormalA(self, arg0: numpy.ndarray[numpy.float64, _Shape[6, n]]) -> None:
+    def spatialNormalA(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[6, n]"]) -> None:
         pass
     @property
-    def spatialNormalB(self) -> numpy.ndarray[numpy.float64, _Shape[6, n]]:
+    def spatialNormalB(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[6, n]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[6, n]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[6, n]"]
         """
     @spatialNormalB.setter
-    def spatialNormalB(self, arg0: numpy.ndarray[numpy.float64, _Shape[6, n]]) -> None:
+    def spatialNormalB(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[6, n]"]) -> None:
         pass
     @property
-    def tangent1(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def tangent1(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @tangent1.setter
-    def tangent1(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def tangent1(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
-    def tangent2(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def tangent2(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @tangent2.setter
-    def tangent2(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def tangent2(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
     def triID1(self) -> int:
@@ -305,20 +305,20 @@ class DistanceResult():
     def minDistance(self, arg0: float) -> None:
         pass
     @property
-    def nearestPoint1(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def nearestPoint1(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @nearestPoint1.setter
-    def nearestPoint1(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def nearestPoint1(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
-    def nearestPoint2(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def nearestPoint2(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @nearestPoint2.setter
-    def nearestPoint2(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def nearestPoint2(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         pass
     @property
     def unclampedMinDistance(self) -> float:
@@ -344,26 +344,26 @@ class RayHit():
         The fraction from `from` point to `to` point
         """
     @property
-    def mNormal(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def mNormal(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
         The normal at the hit point in the world coordinates
 
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @mNormal.setter
-    def mNormal(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def mNormal(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         """
         The normal at the hit point in the world coordinates
         """
     @property
-    def mPoint(self) -> numpy.ndarray[numpy.float64, _Shape[3, 1]]:
+    def mPoint(self) -> typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]:
         """
         The hit point in the world coordinates
 
-        :type: numpy.ndarray[numpy.float64, _Shape[3, 1]]
+        :type: typing.Annotated[numpy.typing.NDArray[numpy.float64], "[3, 1]"]
         """
     @mPoint.setter
-    def mPoint(self, arg0: numpy.ndarray[numpy.float64, _Shape[3, 1]]) -> None:
+    def mPoint(self, arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.float64, "[3, 1]"]) -> None:
         """
         The hit point in the world coordinates
         """
@@ -391,11 +391,11 @@ class RaycastResult():
     def clear(self) -> None: ...
     def hasHit(self) -> bool: ...
     @property
-    def mRayHits(self) -> typing.List[RayHit]:
+    def mRayHits(self) -> list[RayHit]:
         """
-        :type: typing.List[RayHit]
+        :type: list[RayHit]
         """
     @mRayHits.setter
-    def mRayHits(self, arg0: typing.List[RayHit]) -> None:
+    def mRayHits(self, arg0: list[RayHit]) -> None:
         pass
     pass

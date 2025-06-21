@@ -1,4 +1,3 @@
-from __future__ import annotations
 import nimblephysics_libs._nimblephysics.utils.SkelParser
 import typing
 import nimblephysics_libs._nimblephysics.common
