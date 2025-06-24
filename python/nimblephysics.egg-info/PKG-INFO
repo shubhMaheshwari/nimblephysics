@@ -102,7 +102,7 @@ NimblePhysics works by creating python binding to make python work with C++ / da
 1. Update `python/_nimblephysics/server/GUIStateMachine.cpp` with new functions that are accessible to python 
 
 2. Update `dart/proto/GUI.proto`
-	- Add new element in Command, last was collapse container = 40
+	- Add new element in Command, last was set_dropdown_value = 44
 	- Add message to share the element
 	- run cmake command again compile the cpp files in dart/proto using the updated .proto files  
 
@@ -147,3 +147,7 @@ NimblePhysics works by creating python binding to make python work with C++ / da
 		- Tasks: Remove old Collaspible Container class
 		- Current container height resize is not working 
 		- There is a way to add multiple elements in horizaontal fashio. like to texts or dropdowns in the same row. Find a way to do that to make container more compact.	
+		- Multiple-dropdowns with same name for different containers 
+		- Screen Resize not working
+		- onChange function causes WebSocket Error in c++ that cannot be traced back to python, debugger not working
+		- 

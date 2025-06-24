@@ -109,6 +109,9 @@ python/nimblephysics/models/rajagopal_data/Geometry/triquetrum_lvs.vtp.ply
 python/nimblephysics/models/rajagopal_data/Geometry/triquetrum_rvs.vtp.ply
 python/nimblephysics/models/rajagopal_data/Geometry/ulna_lv.vtp.ply
 python/nimblephysics/models/rajagopal_data/Geometry/ulna_rv.vtp.ply
+python/nimblephysics/web_gui/ac02d73eb70945cefc71d30312df3c1d.png
 python/nimblephysics/web_gui/bundle.js
+python/nimblephysics/web_gui/dd90c4ad4fa715765dc608aba5ff432d.png
 python/nimblephysics/web_gui/favicon.ico
 python/nimblephysics/web_gui/index.html
+python/nimblephysics/web_gui/live.js

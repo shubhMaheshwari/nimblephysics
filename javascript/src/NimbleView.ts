@@ -457,7 +457,7 @@ class DARTView {
   
   
     // Let's test bige demo here
-    this.testBigeContainer();
+    // this.testBigeContainer();
 
   }
 /**
@@ -1104,6 +1104,63 @@ testBigeContainerMessages = () => {
         this.layers.get(command.collapsible_container.layer).addUIElement(command.collapsible_container.key);
       }
     }
+  else if (command.set_dropdown_options != null) {
+    const key = command.set_dropdown_options.key;
+    const layer = command.set_dropdown_options.layer;
+    const options: string[] = command.set_dropdown_options.options;
+    
+      // Find the BIGE container that contains this dropdown
+      if (this.uiElements.has(layer)) {
+        const element = this.uiElements.get(layer);
+        if (element == null) {
+          console.warn("BIGE container not found for layer:", layer);
+          return;
+        }
+        if (element.type === "bige-container") {
+          const bigeContainer = element as BigeContainer;
+          
+          // Update the dropdown options using the dropdown's key
+          // The key here represents the dropdown ID within the container
+          const dropdownId = `dropdown-${key}`;
+          bigeContainer.updateDropdownOptions(dropdownId, options);
+          
+          console.log("Updated dropdown options for:", dropdownId, "in container:", layer, "with options:", options);
+        } else {
+          console.warn("Layer", layer, "exists but is not a BIGE container, type:", element.type);
+        }
+      } else {
+        console.warn("BIGE container not found for layer:", layer);
+      }   
+    }
+    else if (command.set_dropdown_value != null) {
+      const key = command.set_dropdown_value.key;
+      const layer = command.set_dropdown_value.layer;
+      const selectedOption = command.set_dropdown_value.selectedOption;
+      console.log("Setting dropdown value for key:", key, "in layer:", layer, "to:", selectedOption);
+        // Find the BIGE container that contains this dropdown
+        if (this.uiElements.has(layer)) {
+          const element = this.uiElements.get(layer);
+          if (element == null) {
+            console.warn("BIGE container not found for layer:", layer);
+            return;
+          }
+          if (element.type === "bige-container") {
+            const bigeContainer = element as BigeContainer;
+            
+            // Update the dropdown options using the dropdown's key
+            // The key here represents the dropdown ID within the container
+            const dropdownId = `dropdown-${key}`;
+            bigeContainer.setValue(dropdownId, selectedOption);
+            
+            console.log("Updated dropdown value for:", dropdownId, "in container:", layer, "to:", selectedOption);
+          } else {
+            console.warn("Layer", layer, "exists but is not a BIGE container, type:", element.type);
+          }
+        } else {
+          console.warn("BIGE container not found for layer:", layer);
+        }   
+      }
+
     else if (command.set_object_position != null) {
       const data = command.set_object_position.data;
       const pos: number[] = [data[0], data[1], data[2]];

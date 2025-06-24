@@ -2177,20 +2177,101 @@ void GUIStateMachine::createCollapsibleContainer(const std::string& label, Eigen
 }
 
 /// This registers a listener that will get called when the dropdown value changes
-void GUIStateMachine::createDropDown(const std::string& label, const std::vector<std::string>& options, const std::string& layer,  std::function<void(const std::string&)> onChange){
+void GUIStateMachine::createDropDown(const std::string& label, const std::vector<std::string>& options, const std::string& layer, std::function<void(const std::string&)> onChange){
   const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
   DropDown dropdown; 
-  dropdown.key = label;
+  
+  string mapKey = label;
+  if (!layer.empty()){ 
+    mapKey = label + "::" + layer;  // Create a scoped key that includes the container
+  } 
+  
+  
+  dropdown.key = mapKey;
   dropdown.options = options;
   dropdown.layer = layer;
+
+  dropdown.selectedOption = options.empty() ? "" : options.front(); // Default to the first option if none is selected
   dropdown.onChange = onChange;
-  mDropDowns[label] = dropdown;
+
+  
+
+  mDropDowns[mapKey] = dropdown;
 
   queueCommand([&](proto::CommandList& list) {
     encodeDropDown(list, dropdown);
   });
 
 }
+
+void GUIStateMachine::setDropDownValue(const std::string& key, const std::string& layer, const std::string& selectedOption){
+  const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
+
+  string mapKey = key;
+  if (!layer.empty()){
+    mapKey = key + "::" + layer;  // Create a scoped key that includes the container
+  };
+
+  if (mDropDowns.find(mapKey) != mDropDowns.end())
+  {
+    mDropDowns[mapKey].selectedOption = selectedOption;
+
+    queueCommand([&](proto::CommandList& list) {
+      proto::Command* command = list.add_command();
+      command->mutable_set_dropdown_value()->set_key(getStringCode(mapKey));
+      command->mutable_set_dropdown_value()->set_layer(getStringCode(layer));
+      command->mutable_set_dropdown_value()->set_selectedoption(selectedOption);
+    });
+  }
+  else
+  {
+    std::cout << "Tried to setDropDownValue() for a mapkey (" << mapKey
+              << ") that does not exist." << std::endl;
+  }
+}
+
+void GUIStateMachine::setDropDownOptions(const std::string& key, const std::string& layer, const std::vector<std::string>& options){
+
+  std::cout << "Tried to setDropDownOptions() for a mapKey (" << key <<  ") with layer (" << layer << ")" << std::endl;
+
+  const std::lock_guard<std::recursive_mutex> lock(this->globalMutex);
+
+  string mapKey = key;
+  if (!layer.empty()){
+    mapKey = key + "::" + layer;  // Create a scoped key that includes the container
+  }
+
+
+  std::cout << "Tried to setDropDownOptions() for a mapKey (" << mapKey <<  ") with layer (" << layer << ")" << std::endl;
+
+  if (mDropDowns.find(mapKey) != mDropDowns.end())
+  {
+
+    std::cout << "Setting options for dropdown with key: " << mapKey << std::endl;
+
+    mDropDowns[mapKey].options = options;
+
+    queueCommand([&](proto::CommandList& list) {
+      proto::Command* command = list.add_command();
+      command->mutable_set_dropdown_options()->set_key(getStringCode(mapKey));
+      command->mutable_set_dropdown_options()->set_layer(getStringCode(layer));
+      for (const auto& option : options)
+      {
+        command->mutable_set_dropdown_options()->add_options(option);
+      }
+    });
+
+    std::cout << "Options set for dropdown with key: " << mapKey << std::endl;
+  }
+  else
+  {
+    std::cout << "Tried to setDropDownOptions() for a mapKey (" << mapKey
+              << ") that does not exist." << std::endl;
+  }
+}
+
+
+
 
 /// This gets an integer code for a string
 int GUIStateMachine::getStringCode(const std::string& key)

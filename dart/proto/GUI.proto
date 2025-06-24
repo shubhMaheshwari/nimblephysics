@@ -51,6 +51,8 @@ message Command {
     Dropdown dropdown = 40;
     CollapsibleContainer collapsible_container = 41;
     GetStringCode get_string_code = 42;
+    SetDropdownOptions set_dropdown_options = 43; 
+    SetDropdownValue set_dropdown_value = 44;      
   }
 }
 
@@ -258,12 +260,27 @@ message Dropdown {
   string label = 4;  
 }
 
+message SetDropdownOptions {
+  int32 key = 1;
+  int32 layer = 2;
+  repeated string options = 3;
+}
+
+message SetDropdownValue {
+  int32 key = 1;
+  int32 layer = 2;
+  string selectedOption = 3;
+}
+
+
+
 
 message CollapsibleContainer {
   int32 key = 1;
   repeated int32 pos = 3; // [x, y]
   string label = 4;
 }
+
 
 
 message SetRichPlotData {

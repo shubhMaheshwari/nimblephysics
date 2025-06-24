@@ -332,6 +332,18 @@ void GUIStateMachine(py::module& m)
             ::py::arg("options"),
             ::py::arg("layer"),
             ::py::arg("listener"))
+       .def(
+            "setDropDownValue",
+            &dart::server::GUIStateMachine::setDropDownValue,
+            ::py::arg("key"),
+            ::py::arg("layer"),
+            ::py::arg("value"))
+      .def(
+            "setDropDownOptions",
+            &dart::server::GUIStateMachine::setDropDownOptions,
+            ::py::arg("key"),
+            ::py::arg("layer"),
+            ::py::arg("options"))
       .def(
           "setUIElementPosition",
           &dart::server::GUIStateMachine::setUIElementPosition,

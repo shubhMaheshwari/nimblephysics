@@ -96,7 +96,7 @@ export namespace dart.proto {
         }
     }
     export class Command extends pb_1.Message {
-        #one_of_decls: number[][] = [[31, 16, 1, 2, 9, 36, 35, 10, 11, 3, 4, 5, 6, 7, 8, 32, 33, 38, 37, 39, 18, 34, 12, 13, 14, 15, 29, 17, 30, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 40, 41, 42]];
+        #one_of_decls: number[][] = [[31, 16, 1, 2, 9, 36, 35, 10, 11, 3, 4, 5, 6, 7, 8, 32, 33, 38, 37, 39, 18, 34, 12, 13, 14, 15, 29, 17, 30, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 40, 41, 42, 43, 44]];
         constructor(data?: any[] | ({} & (({
             set_frames_per_second?: SetFramesPerSecond;
             clear_all?: never;
@@ -140,6 +140,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: ClearAll;
@@ -183,6 +185,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -226,6 +230,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -269,6 +275,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -312,6 +320,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -355,6 +365,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -398,6 +410,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -441,6 +455,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -484,6 +500,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -527,6 +545,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -570,6 +590,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -613,6 +635,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -656,6 +680,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -699,6 +725,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -742,6 +770,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -785,6 +815,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -828,6 +860,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -871,6 +905,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -914,6 +950,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -957,6 +995,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1000,6 +1040,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1043,6 +1085,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1086,6 +1130,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1129,6 +1175,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1172,6 +1220,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1215,6 +1265,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1258,6 +1310,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1301,6 +1355,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1344,6 +1400,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1387,6 +1445,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1430,6 +1490,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1473,6 +1535,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1516,6 +1580,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1559,6 +1625,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1602,6 +1670,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1645,6 +1715,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1688,6 +1760,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1731,6 +1805,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1774,6 +1850,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1817,6 +1895,8 @@ export namespace dart.proto {
             dropdown?: Dropdown;
             collapsible_container?: never;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1860,6 +1940,8 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: CollapsibleContainer;
             get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
         } | {
             set_frames_per_second?: never;
             clear_all?: never;
@@ -1903,6 +1985,98 @@ export namespace dart.proto {
             dropdown?: never;
             collapsible_container?: never;
             get_string_code?: GetStringCode;
+            set_dropdown_options?: never;
+            set_dropdown_value?: never;
+        } | {
+            set_frames_per_second?: never;
+            clear_all?: never;
+            layer?: never;
+            box?: never;
+            sphere?: never;
+            cone?: never;
+            cylinder?: never;
+            capsule?: never;
+            line?: never;
+            mesh?: never;
+            texture?: never;
+            set_object_position?: never;
+            set_object_rotation?: never;
+            set_object_color?: never;
+            set_object_scale?: never;
+            set_object_tooltip?: never;
+            delete_object_tooltip?: never;
+            set_span_warning?: never;
+            set_object_warning?: never;
+            delete_object_warning?: never;
+            enable_drag?: never;
+            enable_edit_tooltip?: never;
+            text?: never;
+            button?: never;
+            slider?: never;
+            plot?: never;
+            rich_plot?: never;
+            set_rich_plot_data?: never;
+            set_rich_plot_bounds?: never;
+            set_ui_elem_pos?: never;
+            set_ui_elem_size?: never;
+            delete_ui_elem?: never;
+            delete_object?: never;
+            set_text_contents?: never;
+            set_button_label?: never;
+            set_slider_value?: never;
+            set_slider_min?: never;
+            set_slider_max?: never;
+            set_plot_data?: never;
+            dropdown?: never;
+            collapsible_container?: never;
+            get_string_code?: never;
+            set_dropdown_options?: SetDropdownOptions;
+            set_dropdown_value?: never;
+        } | {
+            set_frames_per_second?: never;
+            clear_all?: never;
+            layer?: never;
+            box?: never;
+            sphere?: never;
+            cone?: never;
+            cylinder?: never;
+            capsule?: never;
+            line?: never;
+            mesh?: never;
+            texture?: never;
+            set_object_position?: never;
+            set_object_rotation?: never;
+            set_object_color?: never;
+            set_object_scale?: never;
+            set_object_tooltip?: never;
+            delete_object_tooltip?: never;
+            set_span_warning?: never;
+            set_object_warning?: never;
+            delete_object_warning?: never;
+            enable_drag?: never;
+            enable_edit_tooltip?: never;
+            text?: never;
+            button?: never;
+            slider?: never;
+            plot?: never;
+            rich_plot?: never;
+            set_rich_plot_data?: never;
+            set_rich_plot_bounds?: never;
+            set_ui_elem_pos?: never;
+            set_ui_elem_size?: never;
+            delete_ui_elem?: never;
+            delete_object?: never;
+            set_text_contents?: never;
+            set_button_label?: never;
+            set_slider_value?: never;
+            set_slider_min?: never;
+            set_slider_max?: never;
+            set_plot_data?: never;
+            dropdown?: never;
+            collapsible_container?: never;
+            get_string_code?: never;
+            set_dropdown_options?: never;
+            set_dropdown_value?: SetDropdownValue;
         })))) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -2032,6 +2206,12 @@ export namespace dart.proto {
                 }
                 if ("get_string_code" in data && data.get_string_code != undefined) {
                     this.get_string_code = data.get_string_code;
+                }
+                if ("set_dropdown_options" in data && data.set_dropdown_options != undefined) {
+                    this.set_dropdown_options = data.set_dropdown_options;
+                }
+                if ("set_dropdown_value" in data && data.set_dropdown_value != undefined) {
+                    this.set_dropdown_value = data.set_dropdown_value;
                 }
             }
         }
@@ -2413,9 +2593,27 @@ export namespace dart.proto {
         get has_get_string_code() {
             return pb_1.Message.getField(this, 42) != null;
         }
+        get set_dropdown_options() {
+            return pb_1.Message.getWrapperField(this, SetDropdownOptions, 43) as SetDropdownOptions;
+        }
+        set set_dropdown_options(value: SetDropdownOptions) {
+            pb_1.Message.setOneofWrapperField(this, 43, this.#one_of_decls[0], value);
+        }
+        get has_set_dropdown_options() {
+            return pb_1.Message.getField(this, 43) != null;
+        }
+        get set_dropdown_value() {
+            return pb_1.Message.getWrapperField(this, SetDropdownValue, 44) as SetDropdownValue;
+        }
+        set set_dropdown_value(value: SetDropdownValue) {
+            pb_1.Message.setOneofWrapperField(this, 44, this.#one_of_decls[0], value);
+        }
+        get has_set_dropdown_value() {
+            return pb_1.Message.getField(this, 44) != null;
+        }
         get command() {
             const cases: {
-                [index: number]: "none" | "set_frames_per_second" | "clear_all" | "layer" | "box" | "sphere" | "cone" | "cylinder" | "capsule" | "line" | "mesh" | "texture" | "set_object_position" | "set_object_rotation" | "set_object_color" | "set_object_scale" | "set_object_tooltip" | "delete_object_tooltip" | "set_span_warning" | "set_object_warning" | "delete_object_warning" | "enable_drag" | "enable_edit_tooltip" | "text" | "button" | "slider" | "plot" | "rich_plot" | "set_rich_plot_data" | "set_rich_plot_bounds" | "set_ui_elem_pos" | "set_ui_elem_size" | "delete_ui_elem" | "delete_object" | "set_text_contents" | "set_button_label" | "set_slider_value" | "set_slider_min" | "set_slider_max" | "set_plot_data" | "dropdown" | "collapsible_container" | "get_string_code";
+                [index: number]: "none" | "set_frames_per_second" | "clear_all" | "layer" | "box" | "sphere" | "cone" | "cylinder" | "capsule" | "line" | "mesh" | "texture" | "set_object_position" | "set_object_rotation" | "set_object_color" | "set_object_scale" | "set_object_tooltip" | "delete_object_tooltip" | "set_span_warning" | "set_object_warning" | "delete_object_warning" | "enable_drag" | "enable_edit_tooltip" | "text" | "button" | "slider" | "plot" | "rich_plot" | "set_rich_plot_data" | "set_rich_plot_bounds" | "set_ui_elem_pos" | "set_ui_elem_size" | "delete_ui_elem" | "delete_object" | "set_text_contents" | "set_button_label" | "set_slider_value" | "set_slider_min" | "set_slider_max" | "set_plot_data" | "dropdown" | "collapsible_container" | "get_string_code" | "set_dropdown_options" | "set_dropdown_value";
             } = {
                 0: "none",
                 31: "set_frames_per_second",
@@ -2459,9 +2657,11 @@ export namespace dart.proto {
                 28: "set_plot_data",
                 40: "dropdown",
                 41: "collapsible_container",
-                42: "get_string_code"
+                42: "get_string_code",
+                43: "set_dropdown_options",
+                44: "set_dropdown_value"
             };
-            return cases[pb_1.Message.computeOneofCase(this, [31, 16, 1, 2, 9, 36, 35, 10, 11, 3, 4, 5, 6, 7, 8, 32, 33, 38, 37, 39, 18, 34, 12, 13, 14, 15, 29, 17, 30, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 40, 41, 42])];
+            return cases[pb_1.Message.computeOneofCase(this, [31, 16, 1, 2, 9, 36, 35, 10, 11, 3, 4, 5, 6, 7, 8, 32, 33, 38, 37, 39, 18, 34, 12, 13, 14, 15, 29, 17, 30, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 40, 41, 42, 43, 44])];
         }
         static fromObject(data: {
             set_frames_per_second?: ReturnType<typeof SetFramesPerSecond.prototype.toObject>;
@@ -2506,6 +2706,8 @@ export namespace dart.proto {
             dropdown?: ReturnType<typeof Dropdown.prototype.toObject>;
             collapsible_container?: ReturnType<typeof CollapsibleContainer.prototype.toObject>;
             get_string_code?: ReturnType<typeof GetStringCode.prototype.toObject>;
+            set_dropdown_options?: ReturnType<typeof SetDropdownOptions.prototype.toObject>;
+            set_dropdown_value?: ReturnType<typeof SetDropdownValue.prototype.toObject>;
         }): Command {
             const message = new Command({});
             if (data.set_frames_per_second != null) {
@@ -2634,6 +2836,12 @@ export namespace dart.proto {
             if (data.get_string_code != null) {
                 message.get_string_code = GetStringCode.fromObject(data.get_string_code);
             }
+            if (data.set_dropdown_options != null) {
+                message.set_dropdown_options = SetDropdownOptions.fromObject(data.set_dropdown_options);
+            }
+            if (data.set_dropdown_value != null) {
+                message.set_dropdown_value = SetDropdownValue.fromObject(data.set_dropdown_value);
+            }
             return message;
         }
         toObject() {
@@ -2680,6 +2888,8 @@ export namespace dart.proto {
                 dropdown?: ReturnType<typeof Dropdown.prototype.toObject>;
                 collapsible_container?: ReturnType<typeof CollapsibleContainer.prototype.toObject>;
                 get_string_code?: ReturnType<typeof GetStringCode.prototype.toObject>;
+                set_dropdown_options?: ReturnType<typeof SetDropdownOptions.prototype.toObject>;
+                set_dropdown_value?: ReturnType<typeof SetDropdownValue.prototype.toObject>;
             } = {};
             if (this.set_frames_per_second != null) {
                 data.set_frames_per_second = this.set_frames_per_second.toObject();
@@ -2807,6 +3017,12 @@ export namespace dart.proto {
             if (this.get_string_code != null) {
                 data.get_string_code = this.get_string_code.toObject();
             }
+            if (this.set_dropdown_options != null) {
+                data.set_dropdown_options = this.set_dropdown_options.toObject();
+            }
+            if (this.set_dropdown_value != null) {
+                data.set_dropdown_value = this.set_dropdown_value.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -2897,6 +3113,10 @@ export namespace dart.proto {
                 writer.writeMessage(41, this.collapsible_container, () => this.collapsible_container.serialize(writer));
             if (this.has_get_string_code)
                 writer.writeMessage(42, this.get_string_code, () => this.get_string_code.serialize(writer));
+            if (this.has_set_dropdown_options)
+                writer.writeMessage(43, this.set_dropdown_options, () => this.set_dropdown_options.serialize(writer));
+            if (this.has_set_dropdown_value)
+                writer.writeMessage(44, this.set_dropdown_value, () => this.set_dropdown_value.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -3031,6 +3251,12 @@ export namespace dart.proto {
                         break;
                     case 42:
                         reader.readMessage(message.get_string_code, () => message.get_string_code = GetStringCode.deserialize(reader));
+                        break;
+                    case 43:
+                        reader.readMessage(message.set_dropdown_options, () => message.set_dropdown_options = SetDropdownOptions.deserialize(reader));
+                        break;
+                    case 44:
+                        reader.readMessage(message.set_dropdown_value, () => message.set_dropdown_value = SetDropdownValue.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }
@@ -6689,6 +6915,232 @@ export namespace dart.proto {
         }
         static deserializeBinary(bytes: Uint8Array): Dropdown {
             return Dropdown.deserialize(bytes);
+        }
+    }
+    export class SetDropdownOptions extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            key?: number;
+            layer?: number;
+            options?: string[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("key" in data && data.key != undefined) {
+                    this.key = data.key;
+                }
+                if ("layer" in data && data.layer != undefined) {
+                    this.layer = data.layer;
+                }
+                if ("options" in data && data.options != undefined) {
+                    this.options = data.options;
+                }
+            }
+        }
+        get key() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set key(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get layer() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set layer(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get options() {
+            return pb_1.Message.getFieldWithDefault(this, 3, []) as string[];
+        }
+        set options(value: string[]) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            key?: number;
+            layer?: number;
+            options?: string[];
+        }): SetDropdownOptions {
+            const message = new SetDropdownOptions({});
+            if (data.key != null) {
+                message.key = data.key;
+            }
+            if (data.layer != null) {
+                message.layer = data.layer;
+            }
+            if (data.options != null) {
+                message.options = data.options;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                key?: number;
+                layer?: number;
+                options?: string[];
+            } = {};
+            if (this.key != null) {
+                data.key = this.key;
+            }
+            if (this.layer != null) {
+                data.layer = this.layer;
+            }
+            if (this.options != null) {
+                data.options = this.options;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.key != 0)
+                writer.writeInt32(1, this.key);
+            if (this.layer != 0)
+                writer.writeInt32(2, this.layer);
+            if (this.options.length)
+                writer.writeRepeatedString(3, this.options);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SetDropdownOptions {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SetDropdownOptions();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.key = reader.readInt32();
+                        break;
+                    case 2:
+                        message.layer = reader.readInt32();
+                        break;
+                    case 3:
+                        pb_1.Message.addToRepeatedField(message, 3, reader.readString());
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SetDropdownOptions {
+            return SetDropdownOptions.deserialize(bytes);
+        }
+    }
+    export class SetDropdownValue extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            key?: number;
+            layer?: number;
+            selectedOption?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("key" in data && data.key != undefined) {
+                    this.key = data.key;
+                }
+                if ("layer" in data && data.layer != undefined) {
+                    this.layer = data.layer;
+                }
+                if ("selectedOption" in data && data.selectedOption != undefined) {
+                    this.selectedOption = data.selectedOption;
+                }
+            }
+        }
+        get key() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set key(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get layer() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set layer(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get selectedOption() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set selectedOption(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            key?: number;
+            layer?: number;
+            selectedOption?: string;
+        }): SetDropdownValue {
+            const message = new SetDropdownValue({});
+            if (data.key != null) {
+                message.key = data.key;
+            }
+            if (data.layer != null) {
+                message.layer = data.layer;
+            }
+            if (data.selectedOption != null) {
+                message.selectedOption = data.selectedOption;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                key?: number;
+                layer?: number;
+                selectedOption?: string;
+            } = {};
+            if (this.key != null) {
+                data.key = this.key;
+            }
+            if (this.layer != null) {
+                data.layer = this.layer;
+            }
+            if (this.selectedOption != null) {
+                data.selectedOption = this.selectedOption;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.key != 0)
+                writer.writeInt32(1, this.key);
+            if (this.layer != 0)
+                writer.writeInt32(2, this.layer);
+            if (this.selectedOption.length)
+                writer.writeString(3, this.selectedOption);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SetDropdownValue {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SetDropdownValue();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.key = reader.readInt32();
+                        break;
+                    case 2:
+                        message.layer = reader.readInt32();
+                        break;
+                    case 3:
+                        message.selectedOption = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SetDropdownValue {
+            return SetDropdownValue.deserialize(bytes);
         }
     }
     export class CollapsibleContainer extends pb_1.Message {

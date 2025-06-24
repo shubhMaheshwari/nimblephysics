@@ -470,7 +470,8 @@ public:
   void createCollapsibleContainer(const std::string& label, Eigen::Vector2i pos, Eigen::Vector2i size);
   /// This registers a listener that will get called when the dropdown value changes
   void createDropDown(const std::string& label, const std::vector<std::string>& options, const std::string& layer,  std::function<void(const std::string&)> onChange);
-
+  void setDropDownValue(const std::string& key, const std::string& layer, const std::string& value); 
+  void setDropDownOptions(const std::string& key,const std::string& layer,const std::vector<std::string>& options);
 
 
 protected:
@@ -710,6 +711,7 @@ protected:
     std::string key;
     std::vector<std::string> options;
     std::string layer;
+    std::string selectedOption;
     std::function<void(const std::string&)> onChange;
   };
   std::unordered_map<std::string, DropDown> mDropDowns;

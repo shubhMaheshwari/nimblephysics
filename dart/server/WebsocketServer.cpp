@@ -237,14 +237,47 @@ void WebsocketServer::onClose(ClientConnection conn)
 void WebsocketServer::onMessage(
     ClientConnection conn, WebsocketEndpoint::message_ptr msg)
 {
-  // Validate that the incoming message contains valid JSON
-  Json::Value messageObject = WebsocketServer::parseJson(msg->get_payload());
-  if (messageObject.isNull() == false)
+  try 
   {
-    // If any handlers are registered for the message type, invoke them
-    for (auto handler : this->messageHandlers)
+    // Validate that the incoming message contains valid JSON
+    Json::Value messageObject = WebsocketServer::parseJson(msg->get_payload());
+    if (messageObject.isNull() == false)
     {
-      handler(conn, messageObject);
+      // If any handlers are registered for the message type, invoke them
+      for (auto handler : this->messageHandlers)
+      {
+        try 
+        {
+          handler(conn, messageObject);
+        }
+        catch (const std::exception& e)
+        {
+          dterr << "Exception in message handler: " << e.what() << std::endl;
+          
+          // Optionally send error response back to client
+          Json::Value errorResponse;
+          errorResponse["error"] = "Server error processing message";
+          errorResponse["details"] = e.what();
+          sendJsonObject(conn, "error", errorResponse);
+        }
+        catch (...)
+        {
+          dterr << "Unknown exception in message handler" << std::endl;
+          
+          // Send generic error response
+          Json::Value errorResponse;
+          errorResponse["error"] = "Unknown server error processing message";
+          sendJsonObject(conn, "error", errorResponse);
+        }
+      }
     }
+  }
+  catch (const std::exception& e)
+  {
+    dterr << "Exception in onMessage: " << e.what() << std::endl;
+  }
+  catch (...)
+  {
+    dterr << "Unknown exception in onMessage" << std::endl;
   }
 }
