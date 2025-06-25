@@ -45,6 +45,7 @@ class View {
       antialias: true,
       logarithmicDepthBuffer: true // <-- Set render to use logarithmic depth buffer
     });
+    this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.width, this.height);
     (this.renderer as any).shadowMap.enabled = true;
     (this.renderer as any).shadowMap.type = THREE.PCFSoftShadowMap;

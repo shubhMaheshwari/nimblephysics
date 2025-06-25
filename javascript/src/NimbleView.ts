@@ -53,18 +53,6 @@ type Button = {
   label: string;
 };
 
-type CollapsibleContainer = {
-  type: "collapsible";
-  container: HTMLDivElement;
-  key: number;
-  from_top_left: number[];
-  size: number[];
-};
-
-
-
-
-
 class Layer {
   view: DARTView;
   shown: boolean;
@@ -224,7 +212,7 @@ class DARTView {
   mouseoverWarningListeners: Map<number, (over: boolean) => void>;
   dismissedWarnings: Set<number>;
 
-  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot | Dropdown | CollapsibleContainer | BigeContainer>;
+  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot | Dropdown  | BigeContainer>;
 
   dragListeners: ((key: number, pos: number[]) => void)[];
   dragEndListeners: ((key: number) => void)[];
@@ -689,6 +677,8 @@ testBigeContainerMessages = () => {
 
   initGroundPlane() {
     let tex = new THREE.TextureLoader().load(groundConcreteTexture);
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.NearestFilter;
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
     this.groundPlane = new Reflector(new THREE.PlaneBufferGeometry(1000, 1000), {
@@ -2042,6 +2032,8 @@ testBigeContainerMessages = () => {
 
         // Setting this value by default. 
         const matcapTextures_rgbk = new THREE.TextureLoader().load(clayRGBKTexturePath);
+        matcapTextures_rgbk.minFilter = THREE.LinearFilter;
+        matcapTextures_rgbk.magFilter = THREE.LinearFilter;
         meshMaterial = createMatCapMaterial(matcapTextures_rgbk, color);
         meshMaterial.color = new THREE.Color(1, 1, 1);
         // console.log("color", color);
