@@ -689,12 +689,35 @@ class BigeContainer {
     // Add collapse toggle functionality (but prevent when dragging)
     const header = this.container.querySelector('.header');
     header?.addEventListener('click', this.handleHeaderClick);
+    header?.addEventListener('touchend', this.handleHeaderTouchEnd);
+
+
 
     // Add drag functionality
     this.initializeDragHandlers();
 
     // Initialize display
     this.updateStatusDisplay();
+  };
+
+    // Add new touch handler specifically for collapse
+  handleHeaderTouchEnd = (e: TouchEvent): void => {
+    // Prevent collapse/expand if we just finished dragging or resizing
+    if (this.dragOccurred || this.resizeOccurred) {
+      this.dragOccurred = false; 
+      this.resizeOccurred = false;
+      return;
+    }
+
+    // Only toggle collapse if not touching on toggle icon or buttons
+    const target = e.target as HTMLElement;
+    const isToggleIcon = target.closest('.toggle-icon');
+    const isButton = target.closest('button');
+    
+    if (!isToggleIcon && !isButton) {
+      this.toggleCollapse();
+      e.preventDefault(); // Prevent click event from also firing
+    }
   };
 
   
@@ -704,6 +727,14 @@ class BigeContainer {
     if (this.dragOccurred || this.resizeOccurred) {
       this.dragOccurred = false; 
       this.resizeOccurred = false;
+      return;
+    }
+
+
+    // Check if this is a touch device and if a touchend event would have handled this
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice && e.type === 'click') {
+      // Let touchend handle it instead
       return;
     }
 
@@ -1025,6 +1056,8 @@ class BigeContainer {
     if (header) {
       header.removeEventListener('mousedown', this.handleDragStart);
       header.removeEventListener('touchstart', this.handleTouchStart);
+      header.removeEventListener('click', this.handleHeaderClick);
+      header.removeEventListener('touchend', this.handleHeaderTouchEnd);
     }
     
     // Clear resize event listeners
@@ -1039,11 +1072,6 @@ class BigeContainer {
     document.removeEventListener('mouseup', this.handleDragEnd);
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
-    
-    document.removeEventListener('mousemove', this.handleResizeMove);
-    document.removeEventListener('mouseup', this.handleResizeEnd);
-    document.removeEventListener('touchmove', this.handleResizeTouchMove);
-    document.removeEventListener('touchend', this.handleResizeTouchEnd);
 
     // Clear all other event listeners
     this.elements.dynamicDropdowns.forEach((dropdown, id) => {
