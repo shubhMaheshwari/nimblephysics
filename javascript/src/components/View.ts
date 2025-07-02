@@ -43,14 +43,27 @@ class View {
 
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
-      logarithmicDepthBuffer: true // <-- Set render to use logarithmic depth buffer
+      logarithmicDepthBuffer: true, // <-- Set render to use logarithmic depth buffer
+      alpha: true, // Enable alpha channel
+      premultipliedAlpha: false // Disable premultiplied alpha
     });
+    this.renderer.setClearColor( 0xffffff, 0  ); // the default
+    // Ensure autoClear is enabled
+    this.renderer.autoClear = true;
+    this.renderer.autoClearColor = true;
+    this.renderer.autoClearDepth = true;
+    this.renderer.autoClearStencil = true;
+
+
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.width, this.height);
     (this.renderer as any).shadowMap.enabled = true;
     (this.renderer as any).shadowMap.type = THREE.PCFSoftShadowMap;
     (this.renderer as any).outputEncoding = THREE.sRGBEncoding;
+    
+    
 
+    this.renderer.domElement.style.backgroundColor = 'transparent';
     this.container.appendChild(this.renderer.domElement);
 
     this.camera = new THREE.PerspectiveCamera(

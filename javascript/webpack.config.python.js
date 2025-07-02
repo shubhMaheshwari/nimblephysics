@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 var DeclarationBundlerPlugin = require('declaration-bundler-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 /// Set this to "true" to serve the `embedded_dev.ts` entry point from the dev server.
 /// Set this to "false" to serve the `live.ts` entry point from the dev server.
@@ -33,6 +34,19 @@ module.exports = {
         test: /\.txt$/i,
         use: "raw-loader",
       },
+      {
+        test: /\.(png|jpg|gif|mp4)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'data',
+              publicPath: 'data',
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -47,6 +61,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "index.html"),
       excludeChunks: ['embedded', DEV_SERVER_SERVE_EMBEDDED_DEV_CODE ? 'live' : 'embedded_dev']
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/data/img', to: 'images' },
+        { from: '*.mp4', to: 'data', context: 'src/data/' },
+      ]
     })
   ],
   devServer: {

@@ -82,7 +82,7 @@
     min-width: 0; /* Allow text to shrink below content size */
     
     h1 {
-      font-size: clamp(16px, 4vw, 20px); /* Responsive font size */
+      font-size: clamp(10px, 2.5vmin, 16px); /* More mobile-friendly */
       font-weight: 700;
       color: white;
       margin-bottom: 2px;
@@ -92,7 +92,7 @@
     }
 
     p {
-      font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+      font-size: clamp(8px, 1.8vmin, 12px); /* More mobile-friendly */
       color: rgba(191, 219, 254, 0.8);
       white-space: nowrap;
       overflow: hidden;
@@ -110,7 +110,7 @@
   }
 
   .content {
-    padding: clamp(12px, 3vw, 24px); /* Responsive padding */
+    padding: clamp(6px, 1.5vmin, 16px); /* More mobile-friendly */
     
     /* CRITICAL: Remove flex: 1 and let content size naturally */
     /* flex: 1; */
@@ -133,7 +133,8 @@
 
   .select-label {
     display: block;
-    font-size: clamp(10px, 2.5vw, 12px); /* Responsive font size */
+    font-size: clamp(8px, 1.3vmin, 10px); /* More mobile-friendly */
+    // font-size: clamp(10px, 2.5vw, 12px); /* Responsive font size */
     font-weight: 600;
     color: rgba(148, 163, 184, 0.8);
     text-transform: uppercase;
@@ -154,14 +155,15 @@
     background: rgba(30, 41, 59, 0.5);
     border: 1px solid rgba(148, 163, 184, 0.3);
     border-radius: 12px;
-    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px); /* Responsive padding */
+    padding: clamp(4px, 1vmin, 8px) clamp(6px, 1.2vmin, 12px); /* More mobile-friendly */
+    // padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px); /* Responsive padding */
     color: white;
     appearance: none;
     cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(8px);
-    font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
-
+    // font-size: clamp(12px, 3vw, 14px); /* Responsive font size */
+    font-size: clamp(9px, 1.6vmin, 12px); /* More mobile-friendly */
     &:hover {
       background: rgba(51, 65, 85, 0.5);
       border-color: rgba(148, 163, 184, 0.5);

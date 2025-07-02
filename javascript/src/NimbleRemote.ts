@@ -121,7 +121,7 @@ class DARTRemote {
     }
     // Dropdown ...
     else if (command.dropdown != null) {
-      console.log("Creating dropdown: ", command.dropdown);
+      // console.log("Creating dropdown: ", command.dropdown);
       this.view.createDropdown(
         command.dropdown.key,
         command.dropdown.layer,

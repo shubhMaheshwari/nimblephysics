@@ -30,14 +30,14 @@ module.exports = {
         use: "raw-loader",
       },
       {
-        test: /\.(png|jpg|gif)$/i,
+        test: /\.(png|jpg|gif|mp4)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: '[name].[hash].[ext]',
-              outputPath: 'images',
-              publicPath: 'images',
+              outputPath: 'data',
+              publicPath: 'data',
             },
           },
         ],
@@ -58,7 +58,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'src/data/img', to: 'images' }
+        { from: 'src/data/img', to: 'images' },
+        { from: '*.mp4', to: 'data', context: 'src/data/' },
       ]
     })
   ],

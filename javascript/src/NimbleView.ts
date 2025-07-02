@@ -8,8 +8,12 @@ import Slider from "./components/Slider";
 import SimplePlot from "./components/SimplePlot";
 import RichPlot from "./components/RichPlot";
 import BigeContainer from "./components/BigeContainer";
+import { VideoContainer } from "./components/VideoContainer";
+
 import { dart } from './proto/GUI';
 import { MeshLine, MeshLineMaterial } from './THREE.MeshLine';
+
+
 import VERSION_NUM from "../../VERSION.txt";
 import logoSvg from "!!raw-loader!./nimblelogo.svg";
 import leftMouseSvg from "!!raw-loader!./leftMouse.svg";
@@ -17,6 +21,9 @@ import rightMouseSvg from "!!raw-loader!./rightMouse.svg";
 import scrollMouseSvg from "!!raw-loader!./scrollMouse.svg";
 import groundConcreteTexture from '!!file-loader!./data/img/concrete.png';
 import clayRGBKTexturePath from '!!file-loader!./data/img/clay_rgbk.png';
+import testVideoPath from '!!file-loader!./data/SQT01-92a223ee-ea34-46ac-a182-df693f14fb31-1.mp4';
+
+
 
 import { groundPlaneVertexShader, groundPlaneFragmentShader, createMatCapMaterial } from './polyscope/shader';
 import { X } from "@mui/icons-material";
@@ -212,7 +219,7 @@ class DARTView {
   mouseoverWarningListeners: Map<number, (over: boolean) => void>;
   dismissedWarnings: Set<number>;
 
-  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot | Dropdown  | BigeContainer>;
+  uiElements: Map<number, Text | Button | Slider | SimplePlot | RichPlot | Dropdown  | BigeContainer| VideoContainer>;
 
   dragListeners: ((key: number, pos: number[]) => void)[];
   dragEndListeners: ((key: number) => void)[];
@@ -273,7 +280,8 @@ class DARTView {
 
     this.scene = new THREE.Scene();
     // this.scene.background = new THREE.Color(0xf8f8f8);
-    this.scene.background = new THREE.Color(this.backgroundColor);
+    // this.scene.background = new THREE.Color(this.backgroundColor);
+    this.scene.background = null;
 
     // Ground
     this.initGroundPlane();
@@ -354,7 +362,7 @@ class DARTView {
     titleText.innerHTML = "nimble<b>visualizer</b> v" + VERSION_NUM;
     title.appendChild(titleText);
 
-    this.uiContainer.appendChild(title);
+    // this.uiContainer.appendChild(title);
     this.setConnected(startConnected);
 
     const instructions = document.createElement("table");
@@ -446,6 +454,9 @@ class DARTView {
   
     // Let's test bige demo here
     // this.testBigeContainer();
+
+    this.testVideoContainer();
+
 
   }
 /**
@@ -663,11 +674,36 @@ testBigeContainerMessages = () => {
     });
   }
 };
+testVideoContainer = () => {
+  console.log("=== Testing Video Container (HTML) ===");
+  
+  // // Test 1: Basic Video Container Creation
+  console.log("📺 Test 1: Basic Video Container Creation");
+  const videoContainer = this.createVideoContainer(
+    8888,
+    [30, 0], // position: 10% from left, 10% from top
+    [70, 100], // size: 40% width, 30% height
+    testVideoPath
+  );
+
+  if (videoContainer) {
+    console.log("✅ Video container created successfully:", videoContainer.key);
+    console.log("   - Position:", videoContainer.from_top_left);
+    console.log("   - Size:", videoContainer.size);
+    console.log("   - Video source:", videoContainer.videoSrc);
+    console.log("   - State:", videoContainer.state);
+  } else {
+    console.error("❌ Failed to create video container");
+    return;
+  }
+
+};
 
 
   setBackgroundColor = (color: string) => {
     this.backgroundColor = color;
-    this.scene.background = new THREE.Color(color);
+    // this.scene.background = new THREE.Color(color);
+    // this.scene.background = null;
     this.render();
   };
 
@@ -681,7 +717,7 @@ testBigeContainerMessages = () => {
     tex.magFilter = THREE.NearestFilter;
     tex.wrapS = THREE.MirroredRepeatWrapping;
     tex.wrapT = THREE.MirroredRepeatWrapping;
-    this.groundPlane = new Reflector(new THREE.PlaneBufferGeometry(1000, 1000), {
+    this.groundPlane = new Reflector(new THREE.PlaneBufferGeometry(100, 100), {
       clipBias: 0.003,
       textureWidth: this.container.offsetWidth * window.devicePixelRatio,
       textureHeight: this.container.offsetHeight * window.devicePixelRatio,
@@ -1151,6 +1187,58 @@ testBigeContainerMessages = () => {
         }   
       }
 
+    // Add command handling in handleCommand method around line 1050 (after collapsible_container command)
+    else if (command.video_container != null) {
+      const from_top_left: number[] = [command.video_container.pos[0], command.video_container.pos[1]];
+      const size: number[] = [command.video_container.pos[2], command.video_container.pos[3]];
+      const videoSrc = command.video_container.video_src || '/media/shubh/Elements/RoseYu/MCS_DATA/Data/d2020b0e-6d41-4759-87f0-5c158f6ab86a/Videos/Cam0/InputMedia/SQT01/SQT01.mov';
+    
+      // Create video container
+      const videoContainer = this.createVideoContainer(
+        command.video_container.key,
+        from_top_left,
+        size,
+        videoSrc
+      );
+      
+      console.log("Handle command created a video container", command.video_container.key, videoSrc, command.video_container.pos);
+      
+      // Store in layer if specified
+      if (command.video_container.layer != null && this.layers.has(command.video_container.layer)) {
+        this.layers.get(command.video_container.layer).addUIElement(command.video_container.key);
+      }
+    }
+    // Add video control commands
+    else if (command.set_video_source != null) {
+      const key = command.set_video_source.key;
+      const videoSrc = command.set_video_source.video_src;
+      
+      if (this.uiElements.has(key)) {
+        const element = this.uiElements.get(key);
+        if (element.type === "video-container") {
+          const videoContainer = element as VideoContainer;
+          videoContainer.setVideoSource(videoSrc);
+          console.log("Updated video source for:", key, "to:", videoSrc);
+        }
+      }
+    }
+    else if (command.video_play_pause != null) {
+      const key = command.video_play_pause.key;
+      const play = command.video_play_pause.play;
+      
+      if (this.uiElements.has(key)) {
+        const element = this.uiElements.get(key);
+        if (element.type === "video-container") {
+          const videoContainer = element as VideoContainer;
+          if (play) {
+            videoContainer.play();
+          } else {
+            videoContainer.pause();
+          }
+          console.log("Video", play ? "played" : "paused", "for:", key);
+        }
+      }
+    }
     else if (command.set_object_position != null) {
       const data = command.set_object_position.data;
       const pos: number[] = [data[0], data[1], data[2]];
@@ -2244,6 +2332,8 @@ testBigeContainerMessages = () => {
     }
   };
 
+
+
   _createUIElementContainer = (
     key: number,
     from_top_left: number[],
@@ -2338,14 +2428,14 @@ testBigeContainerMessages = () => {
   ) => {
     this.deleteUIElement(key);
 
-    console.log("Creating dropdown:", key, "for container:", container_id, "label:", label);
-    console.log("Available containers before lookup:", Array.from(this.uiElements.entries()).map(([k, v]) => [k, v.type]));
+    // console.log("Creating dropdown:", key, "for container:", container_id, "label:", label);
+    // console.log("Available containers before lookup:", Array.from(this.uiElements.entries()).map(([k, v]) => [k, v.type]));
 
     // Wait for the BIGE container to exist (with timeout)
     let bigeContainer: BigeContainer;
     try {
       bigeContainer = await this.getCollapsibleContainer(container_id);
-      console.log("Found BIGE container:", container_id, bigeContainer);
+      // console.log("Found BIGE container:", container_id, bigeContainer);
     } catch (err) {
       console.error("Failed to get BIGE container for dropdown:", err);
       console.error("Dropdown creation failed for key:", key, "container:", container_id);
@@ -2380,7 +2470,7 @@ testBigeContainerMessages = () => {
     };
     
     this.uiElements.set(key, dropdown);
-    console.log("Successfully created dropdown in BIGE container");
+    // console.log("Successfully created dropdown in BIGE container");
   };
 
 
@@ -2531,6 +2621,42 @@ testBigeContainerMessages = () => {
     };
     this.uiElements.set(key, button);
   };
+
+  createVideoContainer = (
+    key: number,
+    from_top_left: number[] = [10, 60],
+    size: number[] = [40, 30],
+    videoSrc: string = '/media/shubh/Elements/RoseYu/MCS_DATA/Data/d2020b0e-6d41-4759-87f0-5c158f6ab86a/Videos/Cam0/InputMedia/SQT01/SQT01.mov'
+  ): VideoContainer => {
+    console.log("Creating video container:", key, "src:", videoSrc, "size:", size);
+    
+    // Delete any existing UI element at this key
+    this.deleteUIElement(key);
+      
+    // Create the container element and append directly to DARTWindow
+    const div: HTMLDivElement = document.createElement("div");
+    div.style.position = "absolute";
+    div.style.left = from_top_left[0] + "%";
+    div.style.top = from_top_left[1] + "%";
+    div.style.width = size[0] + "%";
+    div.style.height = size[1] + "%";
+    div.className = "DARTWindow-video";
+    
+    // Append directly to the main DARTWindow container (this.container)
+    this.container.appendChild(div);
+
+    // Create a video container
+    let videoContainer = new VideoContainer(div, key, from_top_left, size, videoSrc);
+    this.uiElements.set(key, videoContainer);
+    
+    console.log("Created video container:", key, "at position:", from_top_left);
+    
+    return videoContainer;
+  };
+  
+
+
+
 
   /**
    * This adds a slider to the GUI. This is visible immediately even if you don't call render()
@@ -2713,7 +2839,12 @@ testBigeContainerMessages = () => {
       if (elem.type === "bige-container") {
         // Use BigeContainer's updatePosition method
         (elem as BigeContainer).updatePosition(fromTopLeft);
-      } else {
+      }
+      else if (elem.type === "video-container") {
+        // Use VideoContainer's updatePosition method
+        (elem as VideoContainer).updatePosition(fromTopLeft);
+      }  
+      else {
         elem.container.style.left = fromTopLeft[0] + "px";
         elem.container.style.top = fromTopLeft[1] + "px";
       }
@@ -2733,6 +2864,9 @@ testBigeContainerMessages = () => {
       if (elem.type === "bige-container") {
         // Use BigeContainer's updateSize method
         (elem as BigeContainer).updateSize(size);
+      } else if (elem.type === "video-container") {
+        // Use VideoContainer's updateSize method
+        (elem as VideoContainer).updateSize(size);
       } else {
         elem.container.style.width = size[0] + "px";
         elem.container.style.height = size[1] + "px";
@@ -2813,6 +2947,7 @@ testBigeContainerMessages = () => {
   stop() {
     this.running = false;
   }
+
 }
 
 export default DARTView;

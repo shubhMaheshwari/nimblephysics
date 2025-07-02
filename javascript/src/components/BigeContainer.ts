@@ -300,7 +300,8 @@ class BigeContainer {
           </div>
           <div class="header-text">
             <h1>${this.title}</h1>
-            <p>Biomechanical Analysis</p>
+            <p>Biomechanics-informed GenAI for Exercise Science
+</p>
           </div>
           <div class="toggle-icon" style="margin-left: auto; cursor: pointer;">
             <i data-lucide="chevron-down" width="16" height="16" class="${this.state.isCollapsed ? 'rotated' : ''}"></i>

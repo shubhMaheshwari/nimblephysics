@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;700&display=swap");
 
 @import 'src/components/bige-container';
-
+@import 'src/components/video-container';
 
 .NimbleStandalone-container {
   position: relative;
@@ -221,7 +221,7 @@ $triangle-size: 5px;
 }
 
 .DARTWindow {
-  background-color: #aaaaaa;
+  background-color: transparent;
   overscroll-behavior: none;
   margin: 0px;
   /* width: 100vw; */
@@ -233,7 +233,8 @@ $triangle-size: 5px;
     width: 100%;
     height: 100%;
     position: absolute;
-    z-index: 0;
+    z-index: 2;
+    
   }
 
   .DARTWindow-ui {
@@ -444,6 +445,8 @@ $triangle-size: 5px;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background-color: transparent !important;
+
   }
 
   .GUI_layers_container {
